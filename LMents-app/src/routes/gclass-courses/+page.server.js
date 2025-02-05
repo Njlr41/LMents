@@ -11,12 +11,12 @@ async function getGoogleClassroomClasses(accessToken) {
       return;
     }
     const data = await response.json();
-    console.log('data', data);
-
-    return {data};
+    return {data: data};
     }
 
 export function load({cookies}) {
     const access_token = cookies.get('access_token');    
     return(getGoogleClassroomClasses(access_token));
 }
+
+
