@@ -17,7 +17,9 @@ export const actions = {
           // Generate the url that will be used for the consent dialog.
           const authorizeUrl = oAuth2Client.generateAuthUrl({
             access_type: 'offline',
-            scope: 'https://www.googleapis.com/auth/classroom.courses.readonly',
+            scope: ['https://www.googleapis.com/auth/classroom.courses.readonly',
+                    'https://www.googleapis.com/auth/classroom.course-work.readonly',
+                    'https://www.googleapis.com/auth/classroom.announcements.readonly'],
             prompt: 'consent'
           });
 

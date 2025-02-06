@@ -1,7 +1,9 @@
 <nav>
     <a href="/">Home</a>
     <a href="/signup">Login</a>
-    <a href="/gclass-courses">Google Classroom Courses</a>
+    <a href="/courses">Courses</a>
+    <a href="/assignments">Assignments</a>
+    <a href="/announcements">Announcements</a>
 </nav>
 
 <main>
