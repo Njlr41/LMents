@@ -1,8 +1,8 @@
-async function getGoogleClassroomAnnouncements(accessToken) {
-    const response = await fetch(`https://classroom.googleapis.com/v1/courses/680935019501/announcements`, {
+async function getGoogleClassroomAnnouncements(access_token, course_ID) {
+    const response = await fetch(`https://classroom.googleapis.com/v1/courses/${course_ID}/announcements`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${access_token}`,
         'Accept': 'application/json'
       }
     });
@@ -10,14 +10,21 @@ async function getGoogleClassroomAnnouncements(accessToken) {
       console.error('Error fetching courses:', response.status, await response.text());
       return;
     }
-    const data = await response.json();
-    console.log(data);
-    return {data: data};
+    return(await response.json());
     }
 
-export function load({cookies}) {
-    const access_token = cookies.get('access_token');    
-    return(getGoogleClassroomAnnouncements(access_token));
+export async function load({cookies}) {
+  const access_token = cookies.get('access_token');
+  const test = cookies.get('course_ids');    
+  const course_IDs = test ? JSON.parse(test) : [];
+  const full_announcement_list = [];
+  let i = 0;
+  while (i < course_IDs.length) {
+    const r = await getGoogleClassroomAnnouncements(access_token, course_IDs[i]);
+    full_announcement_list.push(r);
+    i++;
+  }
+  return{data: full_announcement_list};
 }
 
 
