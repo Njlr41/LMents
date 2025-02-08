@@ -1,6 +1,7 @@
 <script>
     export let data;
     const classes = data.data.courses; 
+    console.log(classes);
 </script>
 
 <ul>
