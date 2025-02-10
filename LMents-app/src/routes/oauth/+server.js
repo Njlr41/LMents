@@ -25,7 +25,7 @@ export const GET = async ({ url, cookies}) => {
       } catch (err) {
         console.log('Error logging in with OAuth2 user', err);
     }
-    throw redirect(303, '/');
+    throw redirect(303, '/courses');
 };
 
 // # Consulting Ninja. https://www.youtube.com/watch?v=4QwcC4hfqM0

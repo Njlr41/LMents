@@ -6,18 +6,21 @@ async function getGoogleClassroomAssignments(access_token, course_ID) {
       'Accept': 'application/json'
     }
   });
+
   if (!response.ok) {
     console.error('Error fetching courses:', response.status, await response.text());
     return;
   }
+
   return(await response.json());
-  }
+}
 
 export async function load({cookies}) {
   const access_token = cookies.get('access_token');
-  const temp = cookies.get('course_ids');    
-  const course_IDs = JSON.parse(temp);
-
+  const str_course_IDs = cookies.get('course_ids');
+  const course_IDs = str_course_IDs ? JSON.parse(str_course_IDs) : [];
+  const str_course_names = cookies.get('course_names');
+  const course_names = str_course_names ? JSON.parse(str_course_names) : [];
   const full_assignment_list = [];
   let i = 0;
   while (i < course_IDs.length) {
@@ -25,7 +28,8 @@ export async function load({cookies}) {
     full_assignment_list.push(r);
     i++;
   }
-  return ({data: full_assignment_list});
+  
+  return ({assignments: full_assignment_list, names: course_names});
 }
 
 

@@ -1,12 +1,14 @@
 <script>
     export let data;
-    console.log(data.data[0]);
+    console.log(data);
 </script>
 
 <ul>
-    {#each data.data as announcements}
-    <li>{announcements.announcements[0].courseId}</li>
-        {#each announcements.announcements as announcement}
+    {#each data.announcements as announcements, idx}
+        <div class="course">
+            {data.names[idx]}
+        </div>
+        {#each announcements as announcement}
             <li>{announcement.text}</li>
         {/each}
     {/each}

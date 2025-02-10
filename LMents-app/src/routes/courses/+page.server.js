@@ -17,7 +17,16 @@ async function getGoogleClassroomClasses(accessToken, cookies) {
     course_ids = [ ...course_ids, data.courses[i].id];
     i++;
   }
+
+  let j = 0;
+  let course_names = [];
+  while (j < data.courses.length) {
+    course_names = [ ...course_names, data.courses[j].name];
+    j++;
+  }
+
   cookies.set('course_ids', JSON.stringify(course_ids), {path: '/'});
+  cookies.set('course_names', JSON.stringify(course_names), {path: '/'});
   return {data: data};
   }
 

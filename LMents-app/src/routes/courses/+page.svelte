@@ -1,12 +1,12 @@
+
 <script>
     export let data;
     const classes = data.data.courses; 
     console.log(classes);
 </script>
 
-<ul>
+<div class="course">
     {#each classes as gclass_class}
-        <li>{gclass_class.name}</li>
+        {gclass_class.name}
     {/each}
-</ul>
-
+</div>

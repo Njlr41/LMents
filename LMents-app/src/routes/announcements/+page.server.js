@@ -15,16 +15,19 @@ async function getGoogleClassroomAnnouncements(access_token, course_ID) {
 
 export async function load({cookies}) {
   const access_token = cookies.get('access_token');
-  const test = cookies.get('course_ids');    
-  const course_IDs = test ? JSON.parse(test) : [];
+  const str_course_IDs = cookies.get('course_ids');    
+  const course_IDs = str_course_IDs ? JSON.parse(str_course_IDs) : [];
+  const str_course_names = cookies.get('course_names');
+  const course_names = str_course_names ? JSON.parse(str_course_names) : []; 
   const full_announcement_list = [];
   let i = 0;
   while (i < course_IDs.length) {
     const r = await getGoogleClassroomAnnouncements(access_token, course_IDs[i]);
-    full_announcement_list.push(r);
+    full_announcement_list.push(r.announcements);
     i++;
   }
-  return{data: full_announcement_list};
+
+  return{announcements: full_announcement_list, names:course_names};
 }
 
 
