@@ -1,15 +1,19 @@
 <script>
     export let data;
-    console.log(data);
+    const courses = data.announcements;
 </script>
 
-<ul>
-    {#each data.announcements as announcements, idx}
-        <div class="course">
-            {data.names[idx]}
-        </div>
-        {#each announcements as announcement}
-            <li>{announcement.text}</li>
+<div>
+    {#if courses.length == 0}
+        <p>No Announcements</p>
+    {:else}
+        {#each courses as announcements, idx}
+            <div class="course">
+                {data.names[idx]}
+            </div>
+            {#each announcements as announcement}
+                <li>{announcement.text}</li>
+            {/each}
         {/each}
-    {/each}
-</ul>
+    {/if}
+</div>

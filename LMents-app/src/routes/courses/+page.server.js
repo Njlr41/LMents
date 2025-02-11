@@ -10,24 +10,25 @@ async function getGoogleClassroomClasses(accessToken, cookies) {
     console.error('Error fetching courses:', response.status, await response.text());
     return;
   }
-  const data = await response.json();
+  const courses = await response.json();
   let course_ids = [];
+
   let i = 0;
-  while (i < data.courses.length) {
-    course_ids = [ ...course_ids, data.courses[i].id];
+  while (i < courses.courses.length) {
+    course_ids = [ ...course_ids, courses.courses[i].id];
     i++;
   }
 
   let j = 0;
   let course_names = [];
-  while (j < data.courses.length) {
-    course_names = [ ...course_names, data.courses[j].name];
+  while (j < courses.courses.length) {
+    course_names = [ ...course_names, courses.courses[j].name];
     j++;
   }
 
   cookies.set('course_ids', JSON.stringify(course_ids), {path: '/'});
   cookies.set('course_names', JSON.stringify(course_names), {path: '/'});
-  return {data: data};
+  return {courses: courses};
   }
 
 export function load({cookies}) {

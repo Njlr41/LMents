@@ -1,6 +1,6 @@
 <script>
     export let data;
-    const courses = data.assignments
+    const courses = data.assignments;
 
     function intToMonth(int){
         const months = ['January', 'February', 'March', 'April',
@@ -12,20 +12,22 @@
 </script>
 
 <div>
-    {#if !courses}
+    {#if courses.length == 0}
         <p>No Assignments</p>
     {:else}
         {#each courses as course, idx}
-        <div class="course">
-            {data.names[idx]}
-        </div>
+            <div class="course">
+                {data.names[idx]}
+            </div>
             {#each course.courseWork as course_work}
-                <li>{course_work.title}</li> 
-                {#if course_work.dueDate}
-                    <li>{course_work.dueDate.year}, {intToMonth(course_work.dueDate.month)} {course_work.dueDate.day}</li>
-                {:else}
-                    <li>No deadline.</li>
-                {/if}
+                <div class="course-body">
+                    {course_work.title}
+                    {#if course_work.dueDate}
+                        {course_work.dueDate.year}, {intToMonth(course_work.dueDate.month)} {course_work.dueDate.day}
+                    {:else}
+                        No deadline.
+                    {/if}
+                </div>
             {/each}
         {/each}
     {/if}

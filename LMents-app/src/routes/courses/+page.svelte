@@ -1,12 +1,15 @@
 
 <script>
     export let data;
-    const classes = data.data.courses; 
-    console.log(classes);
+    const classes = data.courses; 
 </script>
 
 <div class="course">
-    {#each classes as gclass_class}
-        {gclass_class.name}
-    {/each}
+    {#if !classes}
+        <p>No Classes</p>
+    {:else}
+        {#each classes.courses as gclass_class}
+            {gclass_class.name}
+        {/each}
+    {/if}
 </div>
