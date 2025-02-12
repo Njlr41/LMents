@@ -25,7 +25,7 @@
                     {#if course_work.dueDate}
                         <p>{course_work.dueDate.year}, {intToMonth(course_work.dueDate.month)} {course_work.dueDate.day}</p>
                     {:else}
-                        <p>No deadline. TEST</p>
+                        <p>No deadline.</p>
                     {/if}
                 </div>
             {/each}
