@@ -1,7 +1,6 @@
 <script>
     export let data;
     const courses = data.assignments;
-
     function intToMonth(int){
         const months = ['January', 'February', 'March', 'April',
                        ,'May', 'June', 'July', 'August', 'September',

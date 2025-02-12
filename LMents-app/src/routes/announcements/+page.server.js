@@ -23,7 +23,9 @@ export async function load({cookies}) {
   let i = 0;
   while (i < course_IDs.length) {
     const r = await getGoogleClassroomAnnouncements(access_token, course_IDs[i]);
-    full_announcement_list.push(r.announcements);
+    if (r) {
+      full_announcement_list.push(r.announcements);
+    }
     i++;
   }
 

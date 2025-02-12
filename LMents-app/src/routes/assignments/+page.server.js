@@ -25,7 +25,9 @@ export async function load({cookies}) {
   let i = 0;
   while (i < course_IDs.length) {
     const r = await getGoogleClassroomAssignments(access_token, course_IDs[i]);
-    full_assignment_list.push(r);
+    if (r) {
+      full_assignment_list.push(r);
+    }
     i++;
   }
   
