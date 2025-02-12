@@ -27,7 +27,7 @@
         border: 0;
         border-radius: 100px;
         box-shadow: 2px 3px 4px #333;
-        background-color: #b5b5b5;
+        background-color: #48AC55;
     }
     
     button:hover {
@@ -36,23 +36,6 @@
         border: 0;
         border-radius: 100px;
         box-shadow: 2px 3px 4px #333;
-        background-color: #606060;
-    }
-
-/* Global Styles */
-    :global(.course) {
-        background-color: gray;
-        height: 50px;
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 30px;
-    }
-
-    :global(.course-body) {
-        background-color: green;
-        display: flex;
-        font-size: 20px;
+        background-color: #30913d;
     }
 </style>

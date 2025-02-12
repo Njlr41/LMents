@@ -18,10 +18,13 @@
     }
 
     /* Global Styles */
+    :global(.course-container) {
+        margin-bottom: 15px;
+    }
     :global(.course) {
-        background-color: gray;
+        background-color: #48AC55;
         height: 50px;
-        border-radius: 15px;
+        border-radius: 15px 15px 0 0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -29,8 +32,9 @@
     }
 
     :global(.course-body) {
-        background-color: green;
+        background-color: lightgray;
         display: flex;
         font-size: 20px;
+        top: 0;
     }
 </style>

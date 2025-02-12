@@ -1,6 +1,7 @@
 <script>
     export let data;
     const courses = data.announcements;
+    console.log(data.announcements.materials);    
 </script>
 
 <div>
@@ -8,12 +9,23 @@
         <p>No Announcements</p>
     {:else}
         {#each courses as announcements, idx}
+            <div class="course-container">
             <div class="course">
                 {data.names[idx]}
             </div>
             {#each announcements as announcement}
-                <li>{announcement.text}</li>
+                <div class="course-body">
+                    <p>Announcement:</p>
+                    <p>{announcement.text}</p>
+                </div>
             {/each}
+            </div>
         {/each}
     {/if}
 </div>
+
+<style>
+    p {
+        margin: 10px;
+    }
+</style>

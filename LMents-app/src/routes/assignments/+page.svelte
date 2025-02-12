@@ -15,19 +15,27 @@
         <p>No Assignments</p>
     {:else}
         {#each courses as course, idx}
+            <div class="course-container">
             <div class="course">
                 {data.names[idx]}
             </div>
             {#each course.courseWork as course_work}
                 <div class="course-body">
-                    {course_work.title}
+                    <p>{course_work.title}</p>
                     {#if course_work.dueDate}
-                        {course_work.dueDate.year}, {intToMonth(course_work.dueDate.month)} {course_work.dueDate.day}
+                        <p>{course_work.dueDate.year}, {intToMonth(course_work.dueDate.month)} {course_work.dueDate.day}</p>
                     {:else}
-                        No deadline.
+                        <p>No deadline.</p>
                     {/if}
                 </div>
             {/each}
+            </div>
         {/each}
     {/if}
 </div>
+
+<style>
+    p {
+        margin: 10px;
+    }
+</style>
