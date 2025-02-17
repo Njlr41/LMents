@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'LMents',
   webDir: 'build',
   server: {
-    url: 'http://localhost:5173'
+    url: 'http://localhost:5173',
   }
 };
 
