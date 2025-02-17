@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">LMents</string>
+    <string name="title_activity_main">LMents</string>
+    <string name="package_name">com.LMents.LMentsapp</string>
+    <string name="custom_url_scheme">com.LMents.LMentsapp</string>
+</resources>
