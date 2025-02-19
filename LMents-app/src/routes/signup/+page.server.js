@@ -1,12 +1,11 @@
 import { redirect } from '@sveltejs/kit';
 import { OAuth2Client } from 'google-auth-library';
 import {AUTH_GOOGLE_ID,AUTH_GOOGLE_SECRET} from '$env/static/private';
+import { SocialLogin } from "@capgo/capacitor-social-login";
 
 export const actions = {
     OAuth2: async({})=>{
         const redirectURL = 'http://localhost:5173/oauth';
-
-        console.log('id',AUTH_GOOGLE_ID)
 
         const oAuth2Client = new OAuth2Client(
             AUTH_GOOGLE_ID,

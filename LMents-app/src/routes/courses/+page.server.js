@@ -33,6 +33,7 @@ async function getGoogleClassroomClasses(accessToken, cookies) {
 
 export function load({cookies}) {
   const access_token = cookies.get('access_token');    
+  console.log("Access", access_token);
   return(getGoogleClassroomClasses(access_token, cookies));
 }
 

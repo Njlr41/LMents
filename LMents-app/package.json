@@ -30,7 +30,9 @@
 		"@capacitor/android": "^7.0.1",
 		"@capacitor/cli": "^7.0.1",
 		"@capacitor/core": "^7.0.1",
+		"@capgo/capacitor-social-login": "^1.2.6",
 		"@sveltejs/adapter-static": "^3.0.8",
+		"dotenv": "^16.4.7",
 		"google-auth-library": "^9.15.1"
 	}
 }
