@@ -15,8 +15,9 @@
 <style>
     .head {
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
-        gap: 15px;
+        gap: 10px;
         justify-content: center;
         align-items: center;
     }

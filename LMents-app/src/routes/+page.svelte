@@ -1,7 +1,7 @@
 <script>
     import { applyAction } from "$app/forms";
     import { SocialLogin } from "@capgo/capacitor-social-login";
-    import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
 
     const AUTH_GOOGLE_ID = import.meta.env.VITE_AUTH_GOOGLE_ID;
 
@@ -24,6 +24,8 @@
             method: 'POST',
             body: formData
         });
+
+        goto('/courses');
     } 
 </script>
 <!-- I really don't know how safe this is lol -->

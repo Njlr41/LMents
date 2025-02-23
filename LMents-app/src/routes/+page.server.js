@@ -11,6 +11,7 @@ export const actions = {
             sameSite: 'strict',
             maxAge: 60 * 60
         });
-        return json({ success: true });
+
+        return({ success: true });
     }
 };

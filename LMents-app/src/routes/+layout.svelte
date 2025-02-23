@@ -19,22 +19,24 @@
 
     /* Global Styles */
     :global(.course-container) {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
     :global(.course) {
         background-color: #48AC55;
-        height: 50px;
+        height: 30px;
         border-radius: 15px 15px 0 0;
         display: flex;
         align-items: center;
-        justify-content: center;
-        font-size: 30px;
+        justify-content: left;
+        font-size: 20px;
+        padding-left: 10px;
     }
 
     :global(.course-body) {
         background-color: lightgray;
         display: flex;
-        font-size: 20px;
+        justify-content: left;
+        font-size: 15px;
         top: 0;
     }
 </style>
