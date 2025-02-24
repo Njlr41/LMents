@@ -26,11 +26,13 @@ export async function load({cookies}) {
   while (i < course_IDs.length) {
     const r = await getGoogleClassroomAssignments(access_token, course_IDs[i]);
     if (r) {
-      full_assignment_list.push(r);
+      for (let j = 0; j < r.courseWork.length; j++){
+        full_assignment_list.push(r.courseWork[j]);
+      }
     }
     i++;
   }
-  
+  full_assignment_list.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)})
   return ({assignments: full_assignment_list, names: course_names});
 }
 

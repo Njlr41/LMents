@@ -24,11 +24,14 @@ export async function load({cookies}) {
   while (i < course_IDs.length) {
     const r = await getGoogleClassroomAnnouncements(access_token, course_IDs[i]);
     if (r) {
-      full_announcement_list.push(r.announcements);
+      console.log(r.announcements);
+      for (let j = 0; j < r.announcements.length; j++) {
+        full_announcement_list.push(r.announcements[j]);
+      }
     }
     i++;
   }
-
+  full_announcement_list.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)})
   return{announcements: full_announcement_list, names:course_names};
 }
 

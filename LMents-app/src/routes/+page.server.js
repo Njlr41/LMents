@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 export const actions = {
+    // Store access token in cookies
     mobileLogin: async ({ cookies, request }) => {
         const formData = await request.formData();
         const accessToken = formData.get('accessToken');
