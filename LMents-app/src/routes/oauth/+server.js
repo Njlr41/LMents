@@ -21,11 +21,11 @@ export const GET = async ({ url, cookies}) => {
         console.info('Tokens acquired.');
         const user = oAuth2Client.credentials;
         console.log('credentials',user);
+        console.log("I am setting the cookie hehe", user.access_token);
         cookies.set('access_token', JSON.stringify(user.access_token), {
           httpOnly: true,
           secure: true,
           path: '/',
-          sameSite: 'strict'
         });
       } catch (err) {
         console.log('Error logging in with OAuth2 user', err);
