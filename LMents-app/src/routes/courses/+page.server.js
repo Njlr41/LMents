@@ -1,3 +1,4 @@
+// Function to fetch Google Classroom Courses from API
 async function getGoogleClassroomClasses(accessToken, cookies) {
   // Fetching courses
   const response = await fetch('https://classroom.googleapis.com/v1/courses', {
@@ -7,22 +8,23 @@ async function getGoogleClassroomClasses(accessToken, cookies) {
       'Accept': 'application/json'
     }
   });
+  // Error check
   if (!response.ok) {
-    console.error('Error fetching courses:', response.status, await response.text());
+    console.log('Error Fetching Google Classroom Classes:', response.status, await response.text());
     return;
   }
+  // Get response
   const courses = await response.json();
-  // Sort the courses by date.
-
+  // Sort the courses by date
   courses.courses.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)});
-  // Grab all course ids and names.
+  // Grab all course IDs
   let course_ids = [];
   let i = 0;
   while (i < courses.courses.length) {
     course_ids = [ ...course_ids, courses.courses[i].id];
     i++;
   }
-
+  // Grab all course Names
   let j = 0;
   let course_names = [];
   while (j < courses.courses.length) {

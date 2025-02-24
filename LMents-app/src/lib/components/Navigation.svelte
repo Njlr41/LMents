@@ -3,7 +3,7 @@
     import { goto } from "$app/navigation";
 
 </script>
-
+<!-- Navigation Buttons -->
 <div class = "head">
     <button on:click={()=>{goto('/')}}>Home</button>
     <button on:click={()=>{goto('/signup')}}>Login</button>
