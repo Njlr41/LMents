@@ -29,7 +29,12 @@
                         </div>
                         {#each assignments as assignment}
                             <div class="course-body">
-                                {assignment.title}
+                                <p style="white-space: pre-line">
+                                    {assignment.title} <br>
+                                    <a href={assignment.alternateLink} target="_blank">
+                                        Assignment Link
+                                    </a>
+                                </p>
                             </div>
                         {/each}
                     </div>

@@ -19,7 +19,12 @@
                         </div>
                         {#each announcements as announcement}
                             <div class="course-body">
-                                {announcement.text}
+                                <p style="white-space: pre-line">
+                                    {announcement.text} <br>
+                                    <a href={announcement.alternateLink} target="_blank">
+                                        AnnouncementLink
+                                    </a>
+                                </p>
                             </div>
                         {/each}
                     </div>

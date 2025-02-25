@@ -45,7 +45,6 @@
         display: flex;
         justify-content: left;
         font-size: 15px;
-        padding: 10px;
         padding-left: 15px;
     }
 </style>
