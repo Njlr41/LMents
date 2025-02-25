@@ -50,19 +50,25 @@ export async function load({cookies}) {
     if (!assignment.dueDate) {
       // Check if key exists
       if (!sorted_assignments["None"]) {
-        sorted_assignments["None"] = [];
+        sorted_assignments["None"] = {};
+      }
+      if (!sorted_assignments["None"][assignment.courseId]) {
+        sorted_assignments["None"][assignment.courseId] = [];
       }
       // Push assignment to appropriate key
-      sorted_assignments["None"].push(assignment);
+      sorted_assignments["None"][assignment.courseId].push(assignment);
     } else {
       // Turn the dueDate to a string (Year,Month,Day)
       let date = `${assignment.dueDate.year},${assignment.dueDate.month},${assignment.dueDate.day}`;
       // Check if key exists
       if (!sorted_assignments[date]) {
-        sorted_assignments[date] = [];
+        sorted_assignments[date] = {};
+      }
+      if (!sorted_assignments[date][assignment.courseId]) {
+        sorted_assignments[date][assignment.courseId] = [];
       }
       // Push assignment to appropriate key
-      sorted_assignments[date].push(assignment);
+      sorted_assignments[date][assignment.courseId].push(assignment);
     }
   };
   return ({assignments: sorted_assignments, names: course_names});

@@ -18,17 +18,25 @@
     }
 
     /* Global Styles */
-    :global(.course-container) {
+    :global(.course-container-date) {
+        margin-bottom: 20px;
+    }
+    :global(.course-container-name) {
         margin-bottom: 10px;
     }
-    :global(.course) {
+    :global(.course-date) {
+        font-size: 25px;
+        margin-bottom: 5px;
+        text-align: center;
+    }
+    :global(.course-name) {
         background-color: #48AC55;
-        height: 30px;
         border-radius: 15px 15px 0 0;
         display: flex;
         align-items: center;
         justify-content: left;
         font-size: 20px;
+        padding: 5px;
         padding-left: 10px;
     }
 
@@ -37,6 +45,7 @@
         display: flex;
         justify-content: left;
         font-size: 15px;
-        top: 0;
+        padding: 10px;
+        padding-left: 15px;
     }
 </style>

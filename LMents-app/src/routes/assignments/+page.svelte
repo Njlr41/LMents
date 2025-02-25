@@ -7,38 +7,39 @@
                        ,'October', 'November', 'December']
 
         return(months[int]);
-    }
+    };
+    console.log(assignments_bydate);
 </script>
 
 <div>
     {#if !assignments_bydate}
-        <p>No Assignments</p>
+        No Assignments
     {:else}
-        {#each Object.entries(assignments_bydate) as [due_date, assignments]}
+        {#each Object.entries(assignments_bydate) as [due_date, courses]}
             <!-- How to iterate through JSON Dict in Svelte taken from: -->
             <!-- Corrl. https://stackoverflow.com/questions/69762140/how-to-iterate-over-a-json-dictionary-in-svelte -->
             <!-- February 25, 2025-->
-            <div class="course-container">
-            <div class="course">
-                {due_date}
-            </div>
-            {#each assignments as assignment}
-                <div class="course-body">
-                    <p>{assignment.title}</p>
-                    {#if assignment.dueDate}
-                    <p>{assignment.dueDate.year}, {intToMonth(assignment.dueDate.month)} {assignment.dueDate.day}</p>
-                    {:else}
-                    <p>No deadline.</p>
-                    {/if}
+            <div class="course-container-date">
+                <div class="course-date">
+                    {due_date}
                 </div>
-            {/each}
+                {#each Object.entries(courses) as [course_id, assignments]}
+                    <div class="course-container-name">
+                        <div class="course-name">
+                            {course_id}
+                        </div>
+                        {#each assignments as assignment}
+                        <div class="course-body">
+                            {assignment.title}
+                        </div>
+                        {/each}
+                    </div>
+                {/each}
             </div>
         {/each}
     {/if}
 </div>
 
 <style>
-    p {
-        margin: 10px;
-    }
+
 </style>
