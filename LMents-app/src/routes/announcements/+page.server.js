@@ -41,9 +41,30 @@ export async function load({cookies}) {
     }
     i++;
   }
-  // Sort the announcements by Date
-  full_announcement_list.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)})
-  return{announcements: full_announcement_list, names:course_names};
+  // Sort and Group announcements by Date and Course 
+  const sorted_announcements = new Object();
+  // Go through each announcement
+  for (let i = 0; i < full_announcement_list.length; i++) {
+    let announcement = full_announcement_list[i];
+
+    // Convert Date to string format
+    let date_format = new Date(announcement.creationTime)
+    let year = date_format.getFullYear();
+    let month = date_format.getMonth();
+    let day = date_format.getDay();
+    let date = `${year},${month},${day}`;
+
+    // Check if key exists
+    if (!sorted_announcements[date]) {
+      sorted_announcements[date] = {};
+    }
+    if (!sorted_announcements[date][announcement.courseId]) {
+      sorted_announcements[date][announcement.courseId] = [];
+    }
+    // Push announcement to appropriate key
+    sorted_announcements[date][announcement.courseId].push(announcement);
+  };
+  return{announcements: sorted_announcements, names:course_names};
 }
 
 

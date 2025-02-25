@@ -8,7 +8,6 @@
 
         return(months[int]);
     };
-    console.log(assignments_bydate);
 </script>
 
 <div>
@@ -29,9 +28,9 @@
                             {course_id}
                         </div>
                         {#each assignments as assignment}
-                        <div class="course-body">
-                            {assignment.title}
-                        </div>
+                            <div class="course-body">
+                                {assignment.title}
+                            </div>
                         {/each}
                     </div>
                 {/each}
