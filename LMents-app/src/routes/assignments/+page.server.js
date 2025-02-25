@@ -41,9 +41,31 @@ export async function load({cookies}) {
     }
     i++;
   }
-  // Sort the assignments by Date
-  full_assignment_list.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)})
-  return ({assignments: full_assignment_list, names: course_names});
+  // Sort the and Group assignments by Date
+  const sorted_assignments = new Object();
+  // Go through each assignment
+  for (let i = 0; i < full_assignment_list.length; i++) {
+    let assignment = full_assignment_list[i];
+    // Check if assignment has a deadline
+    if (!assignment.dueDate) {
+      // Check if key exists
+      if (!sorted_assignments["None"]) {
+        sorted_assignments["None"] = [];
+      }
+      // Push assignment to appropriate key
+      sorted_assignments["None"].push(assignment);
+    } else {
+      // Turn the dueDate to a string (Year,Month,Day)
+      let date = `${assignment.dueDate.year},${assignment.dueDate.month},${assignment.dueDate.day}`;
+      // Check if key exists
+      if (!sorted_assignments[date]) {
+        sorted_assignments[date] = [];
+      }
+      // Push assignment to appropriate key
+      sorted_assignments[date].push(assignment);
+    }
+  };
+  return ({assignments: sorted_assignments, names: course_names});
 }
 
 
