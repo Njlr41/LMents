@@ -1,15 +1,14 @@
-
 <script>
-    export let data;
-    const classes = data.courses; 
+    export let data
+    const classes = data.courses
 </script>
 
 {#if !classes}
     No Classes
 {:else}
-    {#each classes.courses as gclass_class}
+    {#each classes as canvas_class}
     <div class="course">
-        {gclass_class.name}
+        {canvas_class.name}
     </div>
     {/each}
 {/if}

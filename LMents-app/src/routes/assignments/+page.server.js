@@ -20,19 +20,17 @@ async function getGoogleClassroomAssignments(access_token, course_ID) {
 export async function load({cookies}) {
   // Get access token 
   const access_token = cookies.get('access_token');
-  // Get course ids from cookkies and parse to an array
-  const str_course_IDs = cookies.get('course_ids');
-  const course_IDs = str_course_IDs ? JSON.parse(str_course_IDs) : [];
-  // Get course names from cookies and parse to an array
-  const str_course_names = cookies.get('course_names');
-  const course_names = str_course_names ? JSON.parse(str_course_names) : [];
+  // Get course_ids
+  const str_course_ids = cookies.get('course_ids');
+  const course_ids = str_course_ids ? JSON.parse(str_course_ids) : {};
+
   // Create full assignment list
   const full_assignment_list = [];
   // Go through all course IDs
   let i = 0;
-  while (i < course_IDs.length) {
+  while (i < course_ids.length) {
     // Get the assignments for each courseID
-    const r = await getGoogleClassroomAssignments(access_token, course_IDs[i]);
+    const r = await getGoogleClassroomAssignments(access_token, course_ids[i]);
     if (r) {
       // Push each assignment to the full_assignment_list
       for (let j = 0; j < r.courseWork.length; j++){
@@ -71,7 +69,10 @@ export async function load({cookies}) {
       sorted_assignments[date][assignment.courseId].push(assignment);
     }
   };
-  return ({assignments: sorted_assignments, names: course_names});
+  
+  const str_course_dict = cookies.get('course_dict');
+  const course_dict = str_course_dict ? JSON.parse(str_course_dict) : {};
+  return ({assignments: sorted_assignments, course_dict: course_dict, course_ids: course_ids});
 }
 
 

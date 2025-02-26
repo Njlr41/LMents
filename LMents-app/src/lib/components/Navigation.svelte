@@ -10,6 +10,7 @@
     <button on:click={()=>{goto('/courses')}}>Courses</button>
     <button on:click={()=>{goto('/assignments')}}>Assignments</button>
     <button on:click={()=>{goto('/announcements')}}>Announcements</button>
+    <button on:click={()=>{goto('/canvas')}}>Canvas</button>
 </div>
   
 <style>

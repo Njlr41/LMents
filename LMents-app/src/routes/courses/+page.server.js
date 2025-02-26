@@ -17,30 +17,31 @@ async function getGoogleClassroomClasses(accessToken, cookies) {
   const courses = await response.json();
   // Sort the courses by date
   courses.courses.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)});
-  // Grab all course IDs
-  let course_ids = [];
-  let i = 0;
-  while (i < courses.courses.length) {
+  // Create a Dictionary for Courses that maps the course_id to the course_name
+  const course_dict = new Object();
+  for (let i = 0; i < courses.courses.length; i++) {
+    let course_id = courses.courses[i].id;
+    let course_name = courses.courses[i].name;
+
+    if (!course_dict[course_id]) {
+      course_dict[course_id] = course_name;
+    }
+  }
+
+  const course_ids = [];
+  for (let i = 0; i < courses.courses.length; i++) {
     course_ids = [ ...course_ids, courses.courses[i].id];
     i++;
   }
-  // Grab all course Names
-  let j = 0;
-  let course_names = [];
-  while (j < courses.courses.length) {
-    course_names = [ ...course_names, courses.courses[j].name];
-    j++;
-  }
-  
-  // Store all course ids and names in cookies
+  // Store course_dict in cookies
+  cookies.set('course_dict', JSON.stringify(course_dict), {path: '/'});
   cookies.set('course_ids', JSON.stringify(course_ids), {path: '/'});
-  cookies.set('course_names', JSON.stringify(course_names), {path: '/'});
   return {courses: courses};
   }
 
 // Load Classes upon loading of page
 export function load({cookies}) {
-  const access_token = cookies.get('access_token');    
+  const access_token = cookies.get('access_token');
   return(getGoogleClassroomClasses(access_token, cookies));
 }
 
