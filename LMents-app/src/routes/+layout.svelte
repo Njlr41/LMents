@@ -43,8 +43,10 @@
     :global(.course-body) {
         background-color: lightgray;
         display: flex;
+        flex-direction: column;
         justify-content: left;
         font-size: 15px;
         padding-left: 15px;
+        overflow-wrap: break-word;   
     }
 </style>
