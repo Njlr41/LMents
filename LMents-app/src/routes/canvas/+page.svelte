@@ -4,7 +4,7 @@
 </script>
 
 {#if !classes}
-    No Classes
+    <div> No Classes </div>
 {:else}
     {#each classes as canvas_class}
     <div class="course">
@@ -14,12 +14,19 @@
 {/if}
 
 <style>
+
+    * {
+        font-family: verdana;
+        color: #1e1e1e;
+    }
+
     .course {
-        background-color: #48AC55;
+        background-color: #E05545;
+        color: #f7f7f7;
         font-size: 20px;
         padding: 5px;
         text-align: center;
-        border-radius: 15px;
+        border-radius: 12px;
         margin-bottom: 15px;
     }
 </style>
