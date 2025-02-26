@@ -45,5 +45,13 @@ describe('Navigation', () => {
     fireEvent.click(Announcements);
     expect(goto).toHaveBeenCalledWith('/announcements');
   });
+
+  test('Canvas Button is Functional', () => {
+    render(Navigation);
+    const Canvas = screen.getByText('Canvas');
+    expect(Canvas).toBeTruthy();
+    fireEvent.click(Canvas);
+    expect(goto).toHaveBeenCalled('/canvas')
+  });
 })
 
