@@ -4,8 +4,8 @@
     export let data;
     const assignments_bydate = data.assignments;
     function intToMonth(int){
-        const months = ['January', 'February', 'March', 'April',
-                       ,'May', 'June', 'July', 'August', 'September',
+        const months = ['January', 'February', 'March', 'April'
+                       ,'May', 'June', 'July', 'August', 'September'
                        ,'October', 'November', 'December']
 
         return(months[int]);
@@ -17,8 +17,6 @@
         let x = str.split(",");
         return `${intToMonth(x[1])} ${x[2]}, ${x[0]}`
     }
-
-    console.log(data);
 </script>
 
 <div>

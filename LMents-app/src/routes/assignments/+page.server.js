@@ -40,6 +40,7 @@ export async function load({cookies}) {
     i++;
   }
   // Sort the and Group assignments by Date and Course
+  full_assignment_list.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)});
   const sorted_assignments = new Object();
   // Go through each assignment
   for (let i = 0; i < full_assignment_list.length; i++) {

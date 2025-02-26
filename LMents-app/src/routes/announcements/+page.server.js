@@ -39,6 +39,8 @@ export async function load({cookies}) {
     i++;
   }
   // Sort and Group announcements by Date and Course 
+  full_announcement_list.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)});
+  console.log(full_announcement_list);
   const sorted_announcements = new Object();
   // Go through each announcement
   for (let i = 0; i < full_announcement_list.length; i++) {
@@ -48,7 +50,7 @@ export async function load({cookies}) {
     let date_format = new Date(announcement.creationTime)
     let year = date_format.getFullYear();
     let month = date_format.getMonth();
-    let day = date_format.getDay();
+    let day = date_format.getDate();
     let date = `${year},${month},${day}`;
 
     // Check if key exists

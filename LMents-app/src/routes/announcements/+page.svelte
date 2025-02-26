@@ -3,8 +3,8 @@
     const courses_bydate = data.announcements;
 
     function intToMonth(int){
-        const months = ['January', 'February', 'March', 'April',
-                       ,'May', 'June', 'July', 'August', 'September',
+        const months = ['January', 'February', 'March', 'April'
+                       ,'May', 'June', 'July', 'August', 'September'
                        ,'October', 'November', 'December']
 
         return(months[int]);

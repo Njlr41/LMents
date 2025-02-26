@@ -28,7 +28,7 @@ async function getGoogleClassroomClasses(accessToken, cookies) {
     }
   }
 
-  const course_ids = [];
+  let course_ids = [];
   for (let i = 0; i < courses.courses.length; i++) {
     course_ids = [ ...course_ids, courses.courses[i].id];
     i++;
