@@ -55,4 +55,9 @@
 
 <style>
 
+    * {
+            font-family: verdana;
+            color: #1e1e1e;
+        }
+
 </style>
