@@ -45,6 +45,7 @@ export async function load({cookies}) {
   // Go through each assignment
   for (let i = 0; i < full_assignment_list.length; i++) {
     let assignment = full_assignment_list[i];
+    console.log("ASS", assignment);
     // Check if assignment has a deadline
     if (!assignment.dueDate) {
       // Check if key exists

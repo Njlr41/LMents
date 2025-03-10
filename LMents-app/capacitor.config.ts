@@ -10,6 +10,27 @@ const config: CapacitorConfig = {
   server: {
     url: 'http://localhost:5173',
   },
+  plugins: {
+    CapacitorSQLite: {
+      iosDatabaseLocation: 'Library/CapacitorDatabase',
+      iosIsEncryption: true,
+      iosKeychainPrefix: 'angular-sqlite-app-starter',
+      iosBiometric: {
+        biometricAuth: false,
+        biometricTitle : "Biometric login for capacitor sqlite"
+      },
+      androidIsEncryption: true,
+      androidBiometric: {
+        biometricAuth : false,
+        biometricTitle : "Title",
+        biometricSubTitle : "Subtitle"
+      },
+      electronIsEncryption: true,
+      electronWindowsLocation: "C:\\ProgramData\\CapacitorDatabases",
+      electronMacLocation: "/Volumes/Development_Lacie/Development/Databases",
+      electronLinuxLocation: "Databases"
+    }
+  }
 };
 
 export default config;
