@@ -26,6 +26,17 @@ export async function createCoursesTable() {
     console.log('createTables() result:', ret);
 }
 
+export async function createAnnouncementsTable() {
+    const sqlstr = `CREATE TABLE IF NOT EXISTS announcements (
+                        course_id FOREIGN KEY REFERENCES courses(id)
+                        date TEXT
+                        text TEXT
+                        link TEXT
+                    );`
+    const ret = await db.execute(sqlstr);
+    console.log('createTables() result:', ret);
+}
+
 export async function initDB(dbName) {
     db = await openDB(dbName);
     if (!db) {
@@ -33,6 +44,7 @@ export async function initDB(dbName) {
         return;
     }
     await createCoursesTable();
+    await createAnnouncementsTable();
 }
 
 export async function insertCourseData(course_id, course_name) {
@@ -46,8 +58,24 @@ export async function insertCourseData(course_id, course_name) {
     console.log('insertData() result:', ret)
 }
 
+export async function insertAnnouncementData(course_id, announcement_date, announcement_text, announcement_link) {
+    if (!db) {
+        console.error("Database not initialized!")
+        return
+    }
+    const sqlstr = 'INSERT OR REPLACE INTO announcements VALUES (?,?,?,?);'
+    const values = [course_id, announcement_date, announcement_text, announcement_link]
+    const ret = await db.run(sqlstr, values)
+    console.log('insertData() result:', ret)
+}
+
 export async function queryCourses() {
     const res = await db.query("SELECT id, name FROM courses");
+    return res
+}
+
+export async function queryAnnouncements() {
+    const res = await db.query("SELECT course_id, date, text, link FROM announcements");
     return res
 }
 
