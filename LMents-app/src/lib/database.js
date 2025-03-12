@@ -79,5 +79,9 @@ export async function queryAnnouncements() {
     return res
 }
 
+export async function queryAnnouncementDates() {
+    const res = await db.query("SELECT DISTINCT date FROM announcements");
+    return res
+}
 // # bluepuma77. https://github.com/bluepuma77/sveltekit-capacitor-sqlite
 // # March 10, 2025.

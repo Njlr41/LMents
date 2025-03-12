@@ -4,6 +4,7 @@
     let dbName = "MyDatabase"
     let courses_bydate = data.announcements
     let query_result = null;
+    let query_dates = null;
 
     async function getGClassAnnouncement(){
         await initDB(dbName)
@@ -16,6 +17,7 @@
         }
 
         query_result = await queryAnnouncements()
+        query_dates = await queryAnnouncementDates()
         console.log("RESULT HERE", JSON.stringify(query_result.values)) 
     }
 
@@ -39,57 +41,34 @@
     {#if !query_result?.values}
         <div> No Announcements </div>
     {:else}
-        {#each query_result?.values as gclass_announcement}
+        {#each query_dates?.values as unique_date}
             <div class="course-container-date">
                 <div class="course-date">
                     {stringToDate(gclass_announcement.date)}
                 </div>
-                <div class="course-container-name">
-                    <div class="course-name">
-                        {data.course_dict[gclass_announcement.course_id]}
-                    </div>
-                    <div class="course-body">
-                        <p style="white-space: pre-line">
-                            {gclass_announcement.text} <br>
-                            <a href={gclass_announcement.alternateLink} target="_blank">
-                                AnnouncementLink
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        {/each}
-    {/if}
-
-<!-- 
-    {#if Object.entries(courses_bydate).length == 0}
-        No Announcements
-    {:else}
-        {#each Object.entries(courses_bydate) as [date, courses]}
-            <div class="course-container-date">
-                <div class="course-date">
-                    {stringToDate(date)}
-                </div>
-                {#each Object.entries(courses) as [course_id, announcements]}
+                {#each Object.entries(data.course_dict) as [course_id, course_name]}
                     <div class="course-container-name">
                         <div class="course-name">
                             {data.course_dict[course_id]}
                         </div>
-                        {#each announcements as announcement}
-                            <div class="course-body">
-                                <p style="white-space: pre-line">
-                                    {announcement.text} <br>
-                                    <a href={announcement.alternateLink} target="_blank">
-                                        AnnouncementLink
-                                    </a>
-                                </p>
-                            </div>
+                        {#each query_result?.values as gclass_announcement}
+                            {#if gclass_announcement.date == unique_date && gclass_announcement.course_id == course_id}
+                                <div class="course-body">
+                                    <p style="white-space: pre-line">
+                                        {gclass_announcement.text} <br>
+                                        <a href={gclass_announcement.alternateLink} target="_blank">
+                                            AnnouncementLink
+                                        </a>
+                                    </p>
+                                </div>
+                            {/if}
                         {/each}
                     </div>
                 {/each}
             </div>
         {/each}
-    {/if} -->
+    {/if}
+
 </div>
 
 <style>
