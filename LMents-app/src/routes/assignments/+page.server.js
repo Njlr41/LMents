@@ -39,42 +39,9 @@ export async function load({cookies}) {
     }
     i++;
   }
-  // Sort the and Group assignments by Date and Course
-  full_assignment_list.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)});
-  const sorted_assignments = new Object();
-  // Go through each assignment
-  for (let i = 0; i < full_assignment_list.length; i++) {
-    let assignment = full_assignment_list[i];
-    console.log("ASS", assignment);
-    // Check if assignment has a deadline
-    if (!assignment.dueDate) {
-      // Check if key exists
-      if (!sorted_assignments["None"]) {
-        sorted_assignments["None"] = {};
-      }
-      if (!sorted_assignments["None"][assignment.courseId]) {
-        sorted_assignments["None"][assignment.courseId] = [];
-      }
-      // Push assignment to appropriate key
-      sorted_assignments["None"][assignment.courseId].push(assignment);
-    } else {
-      // Turn the dueDate to a string (Year,Month,Day)
-      let date = `${assignment.dueDate.year},${assignment.dueDate.month},${assignment.dueDate.day}`;
-      // Check if key exists
-      if (!sorted_assignments[date]) {
-        sorted_assignments[date] = {};
-      }
-      if (!sorted_assignments[date][assignment.courseId]) {
-        sorted_assignments[date][assignment.courseId] = [];
-      }
-      // Push assignment to appropriate key
-      sorted_assignments[date][assignment.courseId].push(assignment);
-    }
-  };
-  
   const str_course_dict = cookies.get('course_dict');
   const course_dict = str_course_dict ? JSON.parse(str_course_dict) : {};
-  return ({assignments: sorted_assignments, course_dict: course_dict, course_ids: course_ids});
+  return ({assignments: full_assignment_list, course_dict: course_dict, course_ids: course_ids});
 }
 
 

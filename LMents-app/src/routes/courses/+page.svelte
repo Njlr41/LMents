@@ -6,8 +6,10 @@
     let query_result = null;
     async function getGClass(){
         await initDB(dbName)
-        for (let i = 0; i < classes.courses.length; i++){ 
-            await insertCourseData(classes.courses[i].id, classes.courses[i].name)
+        if(classes){
+            for (let i = 0; i < classes.courses.length; i++){ 
+                await insertCourseData(classes.courses[i].id, classes.courses[i].name)
+            }
         }
         query_result = await queryCourses()
         console.log("RESULT HERE", JSON.stringify(query_result.values)) 

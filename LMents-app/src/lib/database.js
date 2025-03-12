@@ -26,6 +26,21 @@ export async function createCoursesTable() {
     console.log('createTables() result:', ret);
 }
 
+export async function createAssignmentsTable() {
+    const sqlstr = `CREATE TABLE IF NOT EXISTS assignments (
+                        assignment_id INTEGER PRIMARY KEY,
+                        course_id INTEGER,
+                        title TEXT,
+                        description TEXT,
+                        due_date TEXT,
+                        link text,
+                        completed BOOLEAN,
+                        FOREIGN KEY(course_id) REFERENCES courses(id)
+                    );`
+    const ret = await db.execute(sqlstr);
+    console.log('createAssignmentsTable() result:', ret);
+}
+
 export async function initDB(dbName) {
     db = await openDB(dbName);
     if (!db) {
@@ -33,6 +48,7 @@ export async function initDB(dbName) {
         return;
     }
     await createCoursesTable();
+    await createAssignmentsTable();
 }
 
 export async function insertCourseData(course_id, course_name) {
@@ -46,10 +62,41 @@ export async function insertCourseData(course_id, course_name) {
     console.log('insertData() result:', ret)
 }
 
+export async function insertAssignmentData(id, course_id, title, description, due_date, link, completed) {
+    if (!db) {
+        console.error("Database not initialized!")
+        return
+    }
+    const sqlstr = `INSERT OR IGNORE INTO assignments VALUES (?, ?, ?, ?, ?, ?, ?);`;
+    const values = [id, course_id, title, description, due_date, link, completed]; 
+    const ret = await db.run(sqlstr, values)
+    console.log('insertAssignmentData() result:', ret)
+}
+
+export async function markAssignmentComplete(assignment_id, completed){
+    const update_str = `
+        UPDATE assignments
+        SET completed = ?
+        WHERE assignment_id = ?;`
+        
+    const values = [!completed, assignment_id]
+    await db.run(update_str, values) 
+    console.log("Assignment marked as completed.", !completed, assignment_id)
+}
 export async function queryCourses() {
     const res = await db.query("SELECT id, name FROM courses");
     return res
 }
+
+export async function queryAssignments() {
+    const res = await db.query(`
+        SELECT *
+        FROM assignments
+        ORDER BY due_date DESC;
+    `);
+    return res;
+}
+
 
 // # bluepuma77. https://github.com/bluepuma77/sveltekit-capacitor-sqlite
 // # March 10, 2025.
