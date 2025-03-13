@@ -2,8 +2,27 @@
 import { render, screen, fireEvent } from '@testing-library/svelte';
 import Navigation from '../Navigation.svelte';
 import { goto } from '$app/navigation';
+import * as dbModule from '../../database';
+import {
+    insertCourseData,
+    insertAssignmentData,
+  } from '../../database';
+import { vi } from 'vitest';
 
 vi.mock('$app/navigation');
+
+
+
+vi.mock('../../database', async (importOriginal) => {
+  const original = await importOriginal();
+  return {
+    ...original,
+    openDB: vi.fn(() => Promise.resolve(mockDb)),
+    insertCourseData: vi.fn(),
+    insertAssignmentData: vi.fn(),
+  };
+})
+
 
 describe('Navigation', () => {
   test('Home Button is Functional', () => {
@@ -55,3 +74,35 @@ describe('Navigation', () => {
   });
 })
 
+describe('Database', () => {
+
+  test('Insert Course Data Functionality', async () => {
+    const courseId = 1;
+    const courseName = 'Test Course';
+    await dbModule.insertCourseData(courseId, courseName);
+    expect(dbModule.insertCourseData).toHaveBeenCalledWith(courseId, courseName);
+  });
+
+  test('Insert Assignment Data Functionality', async () => {
+    const course_id = 1;
+    const name = 'Test Assignment';
+    const due_date = '2025-03-12';
+    const completed = 1;
+    const alternateLink = "http://example.com";
+
+    await dbModule.insertAssignmentData(course_id, name, due_date, completed, alternateLink);
+    expect(dbModule.insertAssignmentData).toHaveBeenCalledWith(course_id, name, due_date, completed, alternateLink);
+  });
+
+  
+  test('Insert Assignment Data Functionality', async () => {
+    const course_id = 1;
+    const name = 'Test Assignment';
+    const due_date = '2025-03-12';
+    const completed = 1;
+    const alternateLink = "http://example.com";
+
+    await dbModule.insertAssignmentData(course_id, name, due_date, completed, alternateLink);
+    expect(dbModule.insertAssignmentData).toHaveBeenCalledWith(course_id, name, due_date, completed, alternateLink);
+  });
+});
