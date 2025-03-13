@@ -1,11 +1,10 @@
 <script>
-    import { initDB, insertAssignmentData, markAssignmentComplete, queryAssignments } from '$lib/database.js';
+    import { initDB, insertAssignmentData, markAssignmentComplete, queryAssignments, queryCourseName } from '$lib/database.js';
     import { text } from '@sveltejs/kit';
 
     export let data;
     let query_result = null;
     let dbName = "MyDatabase"
-
     function intToMonth(int){
         const months = ['January', 'February', 'March', 'April'
                        ,'May', 'June', 'July', 'August', 'September'
@@ -55,10 +54,14 @@
             </div>
             <div class="course-container-name">
                 <div class="course-name">
-                    {data.course_dict[assignment.course_id]}
-                        <button on:click={() => button(assignment.assignment_id, assignment.completed)}>
-                            {assignment.completed ? "COMPLETED" : "NOT COMPLETED"}
-                        </button>
+                    {#await queryCourseName(assignment.course_id) then course_name}
+                        {course_name[0].name}
+                    {:catch error}
+                        Error: {error}
+                    {/await}    
+                    <button on:click={() => button(assignment.assignment_id, assignment.completed)} class="checkmark">
+                        {assignment.completed ? '✅' : '❌'}
+                    </button>
                 </div>
                 <div class="course-body">
                     <p style="white-space: pre-line">
@@ -79,5 +82,11 @@
             font-family: verdana;
             color: #1e1e1e;
         }
+
+    .checkmark {
+        font-size: 20px;
+        padding: 0px;
+        margin-left: auto;
+    }
 
 </style>

@@ -88,6 +88,18 @@ export async function queryCourses() {
     return res
 }
 
+export async function queryCourseName(course_id) {
+    const query_str = `
+        SELECT name
+        FROM courses
+        WHERE id = ?
+    `
+    let values = [course_id]
+    let res = await db.query(query_str, values)
+    console.log("Course Name Retrieved", res)
+    return res.values
+}
+
 export async function queryAssignments() {
     const res = await db.query(`
         SELECT *
