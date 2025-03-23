@@ -13,6 +13,9 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     conditions: mode === 'test' ? ['browser'] : [],
   },
+  optimizeDeps: {
+    disabled: true, 
+  },
 }));
 
 // Fixed a Vitest bug by adding the `resolve` part. Taken from:

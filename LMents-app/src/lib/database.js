@@ -33,22 +33,34 @@ export async function createAssignmentsTable() {
                         title TEXT,
                         description TEXT,
                         due_date TEXT,
-                        link text,
+                        link TEXT,
                         completed BOOLEAN,
                         FOREIGN KEY(course_id) REFERENCES courses(id)
-                    );`
+                    );` // Add Priority Class
     const ret = await db.execute(sqlstr);
     console.log('createAssignmentsTable() result:', ret);
 }
 
+export async function createAnnouncementsTable() {
+    const sqlstr  = `CREATE TABLE IF NOT EXISTS announcements (
+                        announcement_id INTEGER PRIMARY KEY,
+                        course_id INTEGER,
+                        text TEXT,
+                        announcement_date TEXT,
+                        link text,
+                        FOREIGN KEY(course_id) REFERENCES courses(id)
+                    );`
+    const ret = await db.execute(sqlstr)
+}
 export async function initDB(dbName) {
     db = await openDB(dbName);
     if (!db) {
         console.log("Database does not exist.")
-        return;
+        return
     }
-    await createCoursesTable();
-    await createAssignmentsTable();
+    await createCoursesTable()
+    await createAssignmentsTable()
+    await createAnnouncementsTable()
 }
 
 export async function insertCourseData(course_id, course_name) {
@@ -73,6 +85,17 @@ export async function insertAssignmentData(id, course_id, title, description, du
     console.log('insertAssignmentData() result:', ret)
 }
 
+export async function insertAnnouncementData(id, course_id, text, announcement_date, link) {
+    if (!db) {
+        console.error("Database not initialized!")
+        return
+    }
+    const sqlstr = `INSERT OR REPLACE INTO announcements VALUES (?, ?, ?, ?, ?);`
+    const values = [id, course_id, text, announcement_date, link]
+    const ret = await db.run(sqlstr, values)
+    console.log('insertAnnouncementData() result:', ret)
+}
+
 export async function markAssignmentComplete(assignment_id, completed){
     const update_str = `
         UPDATE assignments
@@ -83,6 +106,7 @@ export async function markAssignmentComplete(assignment_id, completed){
     await db.run(update_str, values) 
     console.log("Assignment marked as completed.", !completed, assignment_id)
 }
+
 export async function queryCourses() {
     const res = await db.query("SELECT id, name FROM courses");
     return res
@@ -102,11 +126,29 @@ export async function queryCourseName(course_id) {
 
 export async function queryAssignments() {
     const res = await db.query(`
-        SELECT *
+        SELECT due_date, JSON_GROUP_ARRAY(
+            JSON_OBJECT(
+               'assignment_id', assignment_id,
+               'course_id', course_id,
+               'title', title,
+               'description', description,
+               'link', link,
+               'completed', completed
+            )) AS entry
         FROM assignments
+        GROUP BY due_date   
         ORDER BY due_date DESC;
     `);
     return res;
+}
+
+export async function queryAnnouncements() {
+    const res = await db.query(`
+        SELECT *
+        FROM announcements
+        ORDER BY announcement_date DESC;
+    `)
+    return res
 }
 
 

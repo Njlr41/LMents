@@ -10,7 +10,6 @@
     <button class="gclassroom" on:click={()=>{goto('/courses')}}>Courses</button>
     <button class="gclassroom" on:click={()=>{goto('/assignments')}}>Assignments</button>
     <button class="gclassroom" on:click={()=>{goto('/announcements')}}>Announcements</button>
-    <button class="canvas" on:click={()=>{goto('/canvas')}}>Canvas</button>
 </div>
   
 <style>

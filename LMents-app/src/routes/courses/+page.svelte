@@ -2,19 +2,29 @@
     import { initDB, insertCourseData, queryCourses} from '$lib/database.js';
     export let data
     let dbName = "MyDatabase"
-    let classes = data.courses
+    let GClass = data.GClass
+    let Canvas = data.Canvas
+    console.log("datass", JSON.stringify(GClass))
+    console.log("disass",  JSON.stringify(Canvas))
+    
     let query_result = null;
-    async function getGClass(){
+    async function getClasses(){
         await initDB(dbName)
-        if(classes){
-            for (let i = 0; i < classes.courses.length; i++){ 
-                await insertCourseData(classes.courses[i].id, classes.courses[i].name)
+        if(true){
+            for (let i = 0; i < GClass.length; i++){ 
+                await insertCourseData(GClass[i].id, GClass[i].name)
+                console.log("G", JSON.stringify(GClass[i]))
+            }
+            for (let j = 0; j < Canvas.length; j++){
+                await insertCourseData(Canvas[j].id, Canvas[j].name)
+                console.log("C", JSON.stringify(Canvas[j]))
             }
         }
         query_result = await queryCourses()
-        console.log("RESULT HERE", JSON.stringify(query_result.values)) 
+        console.log("GOD", JSON.stringify(query_result.values)) 
     }
-    getGClass()
+    getClasses()
+
 </script>
 {#if !query_result?.values}
     <div> No Classes </div>

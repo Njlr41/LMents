@@ -19,11 +19,10 @@
         let x = str.split(",");
         return `${intToMonth(x[1])} ${x[2]}, ${x[0]}`
     }
-    console.log(data.assignments)
+    console.log(data)
     async function getAssignments(){
         await initDB(dbName)
         for (let i = 0; i < data.assignments.length; i++){
-            console.log("here")
             await insertAssignmentData(data.assignments[i].id, data.assignments[i].courseId
                                       ,data.assignments[i].title, data.assignments[i].description
                                       ,data.assignments[i].dueDate ? `${data.assignments[i].dueDate.year},${data.assignments[i].dueDate.month},${data.assignments[i].dueDate.day}`: "No Deadline"
@@ -53,24 +52,30 @@
                 </div>
             </div>
             <div class="course-container-name">
-                <div class="course-name">
-                    {#await queryCourseName(assignment.course_id) then course_name}
-                        {course_name[0].name}
-                    {:catch error}
-                        Error: {error}
-                    {/await}    
-                    <button on:click={() => button(assignment.assignment_id, assignment.completed)} class="checkmark">
-                        {assignment.completed ? '✅' : '❌'}
-                    </button>
-                </div>
-                <div class="course-body">
-                    <p style="white-space: pre-line">
-                        {assignment.title} <br>
-                        <a href={assignment.link} target="_blank">
-                            Assignment Link
-                        </a>
-                    </p>
-                </div>
+                {#each JSON.parse(assignment.entry) as entry, idx}
+                {#if idx == 0 || JSON.parse(assignment.entry)[idx - 1].course_id != entry.course_id}
+                    <div class="course-name">
+                        {#await queryCourseName(entry.course_id) then course_name}
+                            {course_name[0].name}
+                        {:catch error}
+                            Error: {error}
+                        {/await}    
+                    </div>
+                {/if}
+                    <div class="course-body">
+                        <p style="white-space: pre-line">
+                            {entry.title} <br>
+                            <br>
+                            {entry.description}
+                            <a href={entry.link} target="_blank">
+                                Assignment Link
+                            </a>
+                        </p>
+                        <button on:click={() => button(entry.assignment_id, entry.completed)} class="checkmark">
+                            {entry.completed ? '✅' : '❌'}
+                        </button>
+                    </div>
+                {/each}
             </div>
         {/each}
     {/if}

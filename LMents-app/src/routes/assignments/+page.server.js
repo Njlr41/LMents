@@ -28,6 +28,7 @@ export async function load({cookies}) {
   const full_assignment_list = [];
   // Go through all course IDs
   let i = 0;
+  console.log(course_ids)
   while (i < course_ids.length) {
     // Get the assignments for each courseID
     const r = await getGoogleClassroomAssignments(access_token, course_ids[i]);
@@ -35,13 +36,12 @@ export async function load({cookies}) {
       // Push each assignment to the full_assignment_list
       for (let j = 0; j < r.courseWork.length; j++){
         full_assignment_list.push(r.courseWork[j]);
+        console.log(r.courseWork[j])
       }
     }
     i++;
   }
-  const str_course_dict = cookies.get('course_dict');
-  const course_dict = str_course_dict ? JSON.parse(str_course_dict) : {};
-  return ({assignments: full_assignment_list, course_dict: course_dict, course_ids: course_ids});
+  return ({assignments: full_assignment_list});
 }
 
 
