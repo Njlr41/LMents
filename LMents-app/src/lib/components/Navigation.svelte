@@ -3,30 +3,84 @@
     import { goto } from "$app/navigation";
 
 </script>
-<!-- Navigation Buttons -->
-<div class = "head">
-    <button on:click={()=>{goto('/')}}>Home</button>
-    <button on:click={()=>{goto('/signup')}}>Login</button>
-    <button class="gclassroom" on:click={()=>{goto('/courses')}}>Courses</button>
-    <button class="gclassroom" on:click={()=>{goto('/assignments')}}>Assignments</button>
-    <button class="gclassroom" on:click={()=>{goto('/announcements')}}>Announcements</button>
-</div>
-  
+    <!-- Navigation Buttons -->
+    <div class = "footer">
+        <!-- Home Button with Image -->
+        <button on:click={() => goto('/')}>
+        <img src="/house.svg" alt="Home Icon"/>
+        </button>
+        <!-- Courses Button with Image -->
+        <button on:click={()=>{goto('/signup')}}>
+        <img src="/sign-in.svg" alt="Login Icon"/>
+        </button>
+        <!-- Courses Button with Image -->
+        <button class="gclassroom" on:click={()=>{goto('/courses')}}>
+        <img src="/course.svg" alt="Courses Icon"/>
+        </button>
+        <!-- Assignments Button with Image -->
+        <button class="gclassroom" on:click={() => goto('/assignments')}>
+        <img src="/clipboard-text.svg" alt="Assignments Icon"/>
+        </button>
+        <!-- Announcements Button with Image -->
+        <button class="gclassroom" on:click={()=>{goto('/announcements')}}>
+        <img src="/megaphone.svg" alt="Announcements Icon"/>
+        </button>
+    </div>
+    <div class = "head">
+        <img src="/LMents_logo.png" alt="Lments Logo" width="50" height="50" />
+    </div>
+    
 <style>
-    .head {
+    .footer {
+        position: fixed; 
+        bottom: 0;
+        left: 0; 
+        right: 0; 
+        background-color: white; 
+        min-width: 100%;
+        box-shadow: 0px -3px 5px rgba(51, 51, 51, 0.1); 
+        z-index: 1000; 
         display: flex;
-        flex-wrap: wrap;
         flex-direction: row;
         gap: 10px;
         justify-content: center;
         align-items: center;
-        /* background-color: #D7D7D7; */
-        border-bottom: 1px solid #d7d7d7;
         padding: 15px;
-        box-shadow: 0px 3px 5px rgba(51, 51, 51, 0.1);
-        margin: 0px;
+        flex-wrap: nowrap;
+        overflow-x: auto; 
+        white-space: nowrap; 
     }
-    
+    @media (max-width: 600px) {
+        .footer {
+            gap: 7px; 
+            padding: 8px; 
+        }
+
+        .footer button {
+            padding: 10px;
+            font-size: 14px; 
+        }
+
+        .footer img {
+            width: 24px; 
+            height: 24px;
+        }
+    }
+    .head {
+        position: fixed; 
+        top: 0; 
+        left: 0;
+        right: 0; 
+        width: 100%; 
+        background-color: grey;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        z-index: 1000; 
+        justify-content: space-between;
+        box-shadow: 0px 3px -5px rgba(51, 51, 51, 0.1); 
+        border-bottom: 1px solid #d7d7d7; 
+    }
     button {
         padding: 10px;
         color: #fff;
@@ -43,7 +97,10 @@
     .canvas {
         background-color: #E05545;
     }
-    
+    .canvas img {
+        width: 30px;
+        height: 30px;
+    }
     button:hover {
         box-shadow: 3px 3px 7px rgba(51, 51, 51, 0.201);
         background-color: #ed9d27;
