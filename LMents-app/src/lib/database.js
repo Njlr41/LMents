@@ -35,6 +35,7 @@ export async function createAssignmentsTable() {
                         due_date TEXT,
                         link TEXT,
                         completed BOOLEAN,
+                        priority BOOLEAN,
                         FOREIGN KEY(course_id) REFERENCES courses(id)
                     );` // Add Priority Class
     const ret = await db.execute(sqlstr);
@@ -74,13 +75,13 @@ export async function insertCourseData(course_id, course_name) {
     console.log('insertData() result:', ret)
 }
 
-export async function insertAssignmentData(id, course_id, title, description, due_date, link, completed) {
+export async function insertAssignmentData(id, course_id, title, description, due_date, link, completed, priority) {
     if (!db) {
         console.error("Database not initialized!")
         return
     }
-    const sqlstr = `INSERT OR IGNORE INTO assignments VALUES (?, ?, ?, ?, ?, ?, ?);`;
-    const values = [id, course_id, title, description, due_date, link, completed]; 
+    const sqlstr = `INSERT OR IGNORE INTO assignments VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+    const values = [id, course_id, title, description, due_date, link, completed, priority]; 
     const ret = await db.run(sqlstr, values)
     console.log('insertAssignmentData() result:', ret)
 }
@@ -107,6 +108,16 @@ export async function markAssignmentComplete(assignment_id, completed){
     console.log("Assignment marked as completed.", !completed, assignment_id)
 }
 
+export async function markAssignmentPriority(assignment_id, priority){
+    const update_str = `
+        UPDATE assignments
+        SET priority = ?
+        WHERE assignment_id = ?;`
+        
+    const values = [!priority, assignment_id]
+    await db.run(update_str, values)
+}
+
 export async function queryCourses() {
     const res = await db.query("SELECT id, name FROM courses");
     return res
@@ -126,18 +137,9 @@ export async function queryCourseName(course_id) {
 
 export async function queryAssignments() {
     const res = await db.query(`
-        SELECT due_date, JSON_GROUP_ARRAY(
-            JSON_OBJECT(
-               'assignment_id', assignment_id,
-               'course_id', course_id,
-               'title', title,
-               'description', description,
-               'link', link,
-               'completed', completed
-            )) AS entry
+        SELECT *
         FROM assignments
-        GROUP BY due_date   
-        ORDER BY due_date DESC;
+        ORDER BY priority DESC, due_date DESC;
     `);
     return res;
 }

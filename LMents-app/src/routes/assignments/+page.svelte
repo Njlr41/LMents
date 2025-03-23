@@ -1,5 +1,5 @@
 <script>
-    import { initDB, insertAssignmentData, markAssignmentComplete, queryAssignments, queryCourseName } from '$lib/database.js';
+    import { initDB, insertAssignmentData, markAssignmentComplete, markAssignmentPriority, queryAnnouncements, queryAssignments, queryCourseName } from '$lib/database.js';
     import { text } from '@sveltejs/kit';
 
     export let data;
@@ -26,7 +26,7 @@
             await insertAssignmentData(data.assignments[i].id, data.assignments[i].courseId
                                       ,data.assignments[i].title, data.assignments[i].description
                                       ,data.assignments[i].dueDate ? `${data.assignments[i].dueDate.year},${data.assignments[i].dueDate.month},${data.assignments[i].dueDate.day}`: "No Deadline"
-                                      ,data.assignments[i].alternateLink, false)
+                                      ,data.assignments[i].alternateLink, false, false)
         }
         query_result = await queryAssignments()
 
@@ -34,11 +34,15 @@
     }
     getAssignments()
     
-    async function button(assignment_id, completed){
+    async function checkmark(assignment_id, completed){
         markAssignmentComplete(assignment_id, completed)
         query_result = await queryAssignments()
     }
 
+    async function priority(assignment_id, priority){
+        markAssignmentPriority(assignment_id, priority)
+        query_result = await queryAssignments()
+    }
 </script>
 
 <div>
@@ -52,30 +56,29 @@
                 </div>
             </div>
             <div class="course-container-name">
-                {#each JSON.parse(assignment.entry) as entry, idx}
-                {#if idx == 0 || JSON.parse(assignment.entry)[idx - 1].course_id != entry.course_id}
                     <div class="course-name">
-                        {#await queryCourseName(entry.course_id) then course_name}
+                        {#await queryCourseName(assignment.course_id) then course_name}
                             {course_name[0].name}
                         {:catch error}
                             Error: {error}
                         {/await}    
                     </div>
-                {/if}
                     <div class="course-body">
                         <p style="white-space: pre-line">
-                            {entry.title} <br>
+                            {assignment.title} <br>
                             <br>
-                            {entry.description}
-                            <a href={entry.link} target="_blank">
+                            {assignment.description}
+                            <a href={assignment.link} target="_blank">
                                 Assignment Link
                             </a>
                         </p>
-                        <button on:click={() => button(entry.assignment_id, entry.completed)} class="checkmark">
-                            {entry.completed ? '✅' : '❌'}
+                        <button on:click={() => checkmark(assignment.assignment_id, assignment.completed)} class="checkmark">
+                            {assignment.completed ? '✅' : '❌'}
+                        </button>
+                        <button on:click={() => priority(assignment.assignment_id, assignment.priority)} class="checkmark">
+                            {assignment.priority ? 'YES' : 'NO'}
                         </button>
                     </div>
-                {/each}
             </div>
         {/each}
     {/if}
