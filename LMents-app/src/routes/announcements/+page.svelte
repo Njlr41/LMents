@@ -20,13 +20,12 @@
     async function getAnnouncements(){
         await initDB(dbName)
         for (let i = 0; i < data.announcements.length; i++){
+            let date = new Date(data.announcements[i].creationTime)
             await insertAnnouncementData(data.announcements[i].id, data.announcements[i].courseId, data.announcements[i].text
-                                        ,data.announcements[i].creationTime
+                                        ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
                                         ,data.announcements[i].alternateLink)
         }
         query_result = await queryAnnouncements()
-
-        console.log("RESULTING", JSON.stringify(query_result.values))
     }
     getAnnouncements()
 </script>
