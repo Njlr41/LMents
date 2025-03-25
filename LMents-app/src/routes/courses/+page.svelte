@@ -1,5 +1,5 @@
 <script>
-    import { initDB, insertCourseData, markClassHidden, queryCourses} from '$lib/database.js';
+    import { initDB, insertCourseData, markAnnouncementsHidden, markAssignmentsHidden, markCourseHidden, queryCourses } from '$lib/database.js';
     export let data
     let dbName = "MyDatabase"
     let GClass = data.GClass
@@ -21,7 +21,9 @@
     getClasses()
 
     async function hidden(course_id, hidden) {
-        markClassHidden(course_id, hidden)
+        markCourseHidden(course_id, hidden)
+        markAssignmentsHidden()
+        markAnnouncementsHidden()
         query_result = await queryCourses()
     }
 </script>

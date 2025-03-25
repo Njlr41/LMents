@@ -23,7 +23,7 @@
             let date = new Date(data.announcements[i].creationTime)
             await insertAnnouncementData(data.announcements[i].id, data.announcements[i].courseId, data.announcements[i].text
                                         ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
-                                        ,data.announcements[i].alternateLink, false)
+                                        ,data.announcements[i].alternateLink, false, false)
         }
         query_result = await queryAnnouncements()
     }
@@ -59,6 +59,7 @@
                         <a href={announcement.link} target="_blank">
                             Announcement Link
                         </a>
+                        {announcement.hidden}
                     </p>
                     <button on:click={() => priority(announcement.announcement_id, announcement.priority)} class="checkmark">
                         {announcement.priority ? 'YES' : 'NO'}

@@ -26,7 +26,7 @@
             await insertAssignmentData(data.assignments[i].id, data.assignments[i].courseId
                                       ,data.assignments[i].title, data.assignments[i].description
                                       ,data.assignments[i].dueDate ? `${data.assignments[i].dueDate.year},${data.assignments[i].dueDate.month},${data.assignments[i].dueDate.day}`: "No Deadline"
-                                      ,data.assignments[i].alternateLink, false, false)
+                                      ,data.assignments[i].alternateLink, false, false, false)
         }
         query_result = await queryAssignments()
 
@@ -71,6 +71,7 @@
                             <a href={assignment.link} target="_blank">
                                 Assignment Link
                             </a>
+                            {assignment.hidden}
                         </p>
                         <button on:click={() => checkmark(assignment.assignment_id, assignment.completed)} class="checkmark">
                             {assignment.completed ? '✅' : '❌'}

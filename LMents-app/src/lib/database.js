@@ -24,7 +24,6 @@ export async function createCoursesTable() {
                         hidden BOOLEAN
                     );`
     const ret = await db.execute(sqlstr);
-    console.log('createTables() result:', ret);
 }
 
 export async function createAssignmentsTable() {
@@ -37,10 +36,10 @@ export async function createAssignmentsTable() {
                         link TEXT,
                         completed BOOLEAN,
                         priority BOOLEAN,
+                        hidden BOOLEAN,
                         FOREIGN KEY(course_id) REFERENCES courses(id)
                     );` // Add Priority Class
     const ret = await db.execute(sqlstr);
-    console.log('createAssignmentsTable() result:', ret);
 }
 
 export async function createAnnouncementsTable() {
@@ -51,6 +50,7 @@ export async function createAnnouncementsTable() {
                         announcement_date TEXT,
                         link text,
                         priority BOOLEAN, 
+                        hidden BOOLEAN,
                         FOREIGN KEY(course_id) REFERENCES courses(id)
                     );`
     const ret = await db.execute(sqlstr)
@@ -58,7 +58,7 @@ export async function createAnnouncementsTable() {
 export async function initDB(dbName) {
     db = await openDB(dbName);
     if (!db) {
-        console.log("Database does not exist.")
+        console.error("Database does not exist.")
         return
     }
     await createCoursesTable()
@@ -74,32 +74,29 @@ export async function insertCourseData(course_id, course_name, hidden) {
     const sqlstr = 'INSERT OR IGNORE INTO courses VALUES (?, ?, ?);'
     const values = [course_id, course_name, hidden]
     const ret = await db.run(sqlstr, values)
-    console.log('insertData() result:', ret)
 }
 
-export async function insertAssignmentData(id, course_id, title, description, due_date, link, completed, priority) {
+export async function insertAssignmentData(id, course_id, title, description, due_date, link, completed, priority, hidden) {
     if (!db) {
         console.error("Database not initialized!")
         return
     }
-    const sqlstr = `INSERT OR IGNORE INTO assignments VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
-    const values = [id, course_id, title, description, due_date, link, completed, priority]; 
+    const sqlstr = `INSERT OR IGNORE INTO assignments VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+    const values = [id, course_id, title, description, due_date, link, completed, priority, hidden]; 
     const ret = await db.run(sqlstr, values)
-    console.log('insertAssignmentData() result:', ret)
 }
 
-export async function insertAnnouncementData(id, course_id, text, announcement_date, link, priority) {
+export async function insertAnnouncementData(id, course_id, text, announcement_date, link, priority, hidden) {
     if (!db) {
         console.error("Database not initialized!")
         return
     }
-    const sqlstr = `INSERT OR IGNORE INTO announcements VALUES (?, ?, ?, ?, ?, ?);`
-    const values = [id, course_id, text, announcement_date, link, priority]
+    const sqlstr = `INSERT OR IGNORE INTO announcements VALUES (?, ?, ?, ?, ?, ?, ?);`
+    const values = [id, course_id, text, announcement_date, link, priority, hidden]
     const ret = await db.run(sqlstr, values)
-    console.log('insertAnnouncementData() result:', ret)
 }
 
-export async function markClassHidden(course_id, hidden) {
+export async function markCourseHidden(course_id, hidden) {
     const update_str = `
         UPDATE courses
         SET hidden = ?
@@ -107,6 +104,43 @@ export async function markClassHidden(course_id, hidden) {
     
     const values = [!hidden, course_id]
     await db.run(update_str, values)
+}
+
+export async function markAssignmentsHidden() {
+    // Get all hidden courses
+    const hidden_query_str = `
+        SELECT id
+        FROM courses
+        WHERE hidden = ?;`
+    const hidden_values = [true]
+    const hidden_ids = await db.query(hidden_query_str, hidden_values)
+    // Get all visible courses
+    const visible_query_str = `
+        SELECT id 
+        FROM courses
+        WHERE hidden = ?;`
+    const visible_values = [false]
+    const visible_ids = await db.query(visible_query_str, visible_values)
+    // Update all assignments of hidden courses
+    for (let i = 0; i < hidden_ids.values.length; i++) {
+        console.log("SanityA")
+        const update_hidden_str = `
+            UPDATE assignments
+            SET hidden = ?
+            WHERE course_id = ?;`
+        const update_hidden_values = [true, hidden_ids.values[i].id]
+        await db.run(update_hidden_str, update_hidden_values)
+    }
+    // Update all assignments of visible courses
+    for (let j = 0; j < visible_ids.values.length; j++) {
+        console.log("Sanity")
+        const update_visible_str = `
+            UPDATE assignments
+            SET hidden = ?
+            WHERE course_id = ?;`
+        const update_visible_values = [false, visible_ids.values[j].id]
+        await db.run(update_visible_str, update_visible_values)
+    }
 }
 
 export async function markAssignmentComplete(assignment_id, completed){
@@ -129,6 +163,41 @@ export async function markAssignmentPriority(assignment_id, priority){
     await db.run(update_str, values)
 }
 
+export async function markAnnouncementsHidden() {
+    // Get all hidden courses
+    const hidden_query_str = `
+        SELECT id
+        FROM courses
+        WHERE hidden = ?;`
+    const hidden_values = [true]
+    const hidden_ids = await db.query(hidden_query_str, hidden_values)
+    // Get all visible courses
+    const visible_query_str = `
+        SELECT id 
+        FROM courses
+        WHERE hidden = ?;`
+    const visible_values = [false]
+    const visible_ids = await db.query(visible_query_str, visible_values)
+    // Update all assignments of hidden courses
+    for (let i = 0; i < hidden_ids.values.length; i++) {
+        let update_hidden_str = `
+            UPDATE announcements
+            SET hidden = ?
+            WHERE course_id = ?;`
+        let update_hidden_values = [true, hidden_ids.values[i].id]
+        await db.run(update_hidden_str, update_hidden_values)
+    }
+    // Update all assignments of visible courses
+    for (let j = 0; j < visible_ids.values.length; j++) {
+        let update_visible_str = `
+            UPDATE announcements
+            SET hidden = ?
+            WHERE course_id = ?;`
+        let update_visible_values = [false, visible_ids.values[j].id]
+        await db.run(update_visible_str, update_visible_values)
+    }
+}
+
 export async function markAnnouncementPriority(announcement_id, priority){
     const update_str = `
         UPDATE announcements
@@ -148,11 +217,10 @@ export async function queryCourseName(course_id) {
     const query_str = `
         SELECT name
         FROM courses
-        WHERE id = ?
+        WHERE id = ?;
     `
     let values = [course_id]
     let res = await db.query(query_str, values)
-    console.log("Course Name Retrieved", res)
     return res.values
 }
 
@@ -162,7 +230,7 @@ export async function queryAssignments() {
         FROM assignments
         ORDER BY priority DESC, due_date DESC;
     `);
-    return res;
+    return res
 }
 
 export async function queryAnnouncements() {
@@ -173,7 +241,5 @@ export async function queryAnnouncements() {
     `)
     return res
 }
-
-
 // # bluepuma77. https://github.com/bluepuma77/sveltekit-capacitor-sqlite
 // # March 10, 2025.
