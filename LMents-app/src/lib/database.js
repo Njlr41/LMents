@@ -49,6 +49,7 @@ export async function createAnnouncementsTable() {
                         text TEXT,
                         announcement_date TEXT,
                         link text,
+                        priority BOOLEAN, 
                         FOREIGN KEY(course_id) REFERENCES courses(id)
                     );`
     const ret = await db.execute(sqlstr)
@@ -86,13 +87,13 @@ export async function insertAssignmentData(id, course_id, title, description, du
     console.log('insertAssignmentData() result:', ret)
 }
 
-export async function insertAnnouncementData(id, course_id, text, announcement_date, link) {
+export async function insertAnnouncementData(id, course_id, text, announcement_date, link, priority) {
     if (!db) {
         console.error("Database not initialized!")
         return
     }
-    const sqlstr = `INSERT OR REPLACE INTO announcements VALUES (?, ?, ?, ?, ?);`
-    const values = [id, course_id, text, announcement_date, link]
+    const sqlstr = `INSERT OR IGNORE INTO announcements VALUES (?, ?, ?, ?, ?, ?);`
+    const values = [id, course_id, text, announcement_date, link, priority]
     const ret = await db.run(sqlstr, values)
     console.log('insertAnnouncementData() result:', ret)
 }
@@ -115,6 +116,16 @@ export async function markAssignmentPriority(assignment_id, priority){
         WHERE assignment_id = ?;`
         
     const values = [!priority, assignment_id]
+    await db.run(update_str, values)
+}
+
+export async function markAnnouncementPriority(announcement_id, priority){
+    const update_str = `
+        UPDATE announcements
+        SET priority = ?
+        WHERE announcement_id = ?;`
+        
+    const values = [!priority, announcement_id]
     await db.run(update_str, values)
 }
 
@@ -148,7 +159,7 @@ export async function queryAnnouncements() {
     const res = await db.query(`
         SELECT *
         FROM announcements
-        ORDER BY announcement_date DESC;
+        ORDER BY priority DESC, announcement_date DESC;
     `)
     return res
 }

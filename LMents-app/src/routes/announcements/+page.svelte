@@ -1,5 +1,5 @@
 <script>
-    import { initDB, insertAnnouncementData, markAssignmentComplete, queryAnnouncements, queryCourseName } from '$lib/database.js';
+    import { initDB, insertAnnouncementData, markAnnouncementPriority, queryAnnouncements, queryCourseName } from '$lib/database.js';
 
     export let data;
     let query_result = null
@@ -23,11 +23,16 @@
             let date = new Date(data.announcements[i].creationTime)
             await insertAnnouncementData(data.announcements[i].id, data.announcements[i].courseId, data.announcements[i].text
                                         ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
-                                        ,data.announcements[i].alternateLink)
+                                        ,data.announcements[i].alternateLink, false)
         }
         query_result = await queryAnnouncements()
     }
     getAnnouncements()
+
+    async function priority(announcement_id, priority){
+        markAnnouncementPriority(announcement_id, priority)
+        query_result = await queryAnnouncements()
+    }
 </script>
 
 <div>
@@ -55,6 +60,9 @@
                             Announcement Link
                         </a>
                     </p>
+                    <button on:click={() => priority(announcement.announcement_id, announcement.priority)} class="checkmark">
+                        {announcement.priority ? 'YES' : 'NO'}
+                    </button>
                 </div>
             </div>
         {/each}
@@ -66,6 +74,11 @@
     * {
         font-family: verdana;
         color: #1e1e1e;
+    }
+    .checkmark {
+        font-size: 20px;
+        padding: 0px;
+        margin-left: auto;
     }
 
 </style>
