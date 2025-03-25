@@ -3,5 +3,4 @@ This is a course requirement for CS 191/CS192 Software Engineering Courses of th
 
 Julian Carlos T. Yabut <br />
 Karlo S. Domingo <br />
-Maverick Flynn P. Niedo <br />
 Nicholas John L. Reyes
