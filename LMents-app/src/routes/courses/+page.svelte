@@ -1,37 +1,39 @@
 <script>
-    import { initDB, insertCourseData, queryCourses} from '$lib/database.js';
+    import { initDB, insertCourseData, markClassHidden, queryCourses} from '$lib/database.js';
     export let data
     let dbName = "MyDatabase"
     let GClass = data.GClass
     let Canvas = data.Canvas
-    console.log("datass", JSON.stringify(GClass))
-    console.log("disass",  JSON.stringify(Canvas))
     
     let query_result = null;
     async function getClasses(){
         await initDB(dbName)
         if(true){
             for (let i = 0; i < GClass.length; i++){ 
-                await insertCourseData(GClass[i].id, GClass[i].name)
-                console.log("G", JSON.stringify(GClass[i]))
+                await insertCourseData(GClass[i].id, GClass[i].name, false)
             }
             for (let j = 0; j < Canvas.length; j++){
-                await insertCourseData(Canvas[j].id, Canvas[j].name)
-                console.log("C", JSON.stringify(Canvas[j]))
+                await insertCourseData(Canvas[j].id, Canvas[j].name, false)
             }
         }
         query_result = await queryCourses()
-        console.log("GOD", JSON.stringify(query_result.values)) 
     }
     getClasses()
 
+    async function hidden(course_id, hidden) {
+        markClassHidden(course_id, hidden)
+        query_result = await queryCourses()
+    }
 </script>
 {#if !query_result?.values}
     <div> No Classes </div>
 {:else}
-    {#each query_result?.values as gclass_class}
+    {#each query_result?.values as course}
     <div class="course">
-        {gclass_class.name}
+        {course.name}
+        <button on:click={() => hidden(course.id, course.hidden)} class = "">
+            {course.hidden ? 'HIDDEN' : 'VISIBLE'}
+        </button>
     </div>
     {/each}
 {/if}

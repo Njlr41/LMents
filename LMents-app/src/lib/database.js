@@ -20,7 +20,8 @@ export async function openDB(dbName) {
 export async function createCoursesTable() {
     const sqlstr = `CREATE TABLE IF NOT EXISTS courses (
                         id INTEGER PRIMARY KEY,
-                        name TEXT
+                        name TEXT,
+                        hidden BOOLEAN
                     );`
     const ret = await db.execute(sqlstr);
     console.log('createTables() result:', ret);
@@ -65,13 +66,13 @@ export async function initDB(dbName) {
     await createAnnouncementsTable()
 }
 
-export async function insertCourseData(course_id, course_name) {
+export async function insertCourseData(course_id, course_name, hidden) {
     if (!db) {
         console.error("Database not initialized!")
         return
     }
-    const sqlstr = 'INSERT OR REPLACE INTO courses VALUES (?,?);'
-    const values = [course_id, course_name]
+    const sqlstr = 'INSERT OR IGNORE INTO courses VALUES (?, ?, ?);'
+    const values = [course_id, course_name, hidden]
     const ret = await db.run(sqlstr, values)
     console.log('insertData() result:', ret)
 }
@@ -98,6 +99,16 @@ export async function insertAnnouncementData(id, course_id, text, announcement_d
     console.log('insertAnnouncementData() result:', ret)
 }
 
+export async function markClassHidden(course_id, hidden) {
+    const update_str = `
+        UPDATE courses
+        SET hidden = ?
+        WHERE id = ?;`
+    
+    const values = [!hidden, course_id]
+    await db.run(update_str, values)
+}
+
 export async function markAssignmentComplete(assignment_id, completed){
     const update_str = `
         UPDATE assignments
@@ -106,7 +117,6 @@ export async function markAssignmentComplete(assignment_id, completed){
         
     const values = [!completed, assignment_id]
     await db.run(update_str, values) 
-    console.log("Assignment marked as completed.", !completed, assignment_id)
 }
 
 export async function markAssignmentPriority(assignment_id, priority){
@@ -130,7 +140,7 @@ export async function markAnnouncementPriority(announcement_id, priority){
 }
 
 export async function queryCourses() {
-    const res = await db.query("SELECT id, name FROM courses");
+    const res = await db.query("SELECT * FROM courses");
     return res
 }
 
