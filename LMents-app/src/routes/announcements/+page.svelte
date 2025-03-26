@@ -64,16 +64,21 @@
                 SCUBA Diving AY 2024-2025
             </div>
             <div class="course-body">
+                <div class="actions">
+                    <button class="star">
+                        {#if true}
+                            <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
+                        {:else}
+                            <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
+                        {/if}
+                    </button>
+                    <a href="blank" target="_blank">
+                        <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
+                    </a>
+                </div>
                 <p style="white-space: pre-line">
                     This is the announcement text sample. <br>
-                    <a href="blank" target="_blank">
-                        Announcement Link
-                    </a>
-                    false
                 </p>
-                <button class="checkmark">
-                    {true ? 'YES' : 'NO'}
-                </button>
             </div>
         </div> -->
         <!-- TESTING -->
@@ -99,16 +104,22 @@
                         {/await}
                     </div>
                     <div class="course-body">
+                        <div class="actions">
+                            <button on:click={() => priority(announcement.announcement_id, announcement.priority)} class="star">
+                                <!-- {true ? 'YES' : 'NO'} -->
+                                {#if true}
+                                    <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
+                                {:else}
+                                    <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
+                                {/if}
+                            </button>
+                            <a href={announcement.link} target="_blank">
+                                <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
+                            </a>
+                        </div>
                         <p style="white-space: pre-line">
                             {announcement.text} <br>
-                            <a href={announcement.link} target="_blank">
-                                Announcement Link
-                            </a>
-                            {announcement.hidden}
                         </p>
-                        <button on:click={() => priority(announcement.announcement_id, announcement.priority)} class="checkmark">
-                            {announcement.priority ? 'YES' : 'NO'}
-                        </button>
                     </div>
                 </div>
             {/if}
@@ -118,10 +129,21 @@
 
 <style>
 
-    .checkmark {
-        font-size: 20px;
+    .star {
         padding: 0px;
-        margin-left: auto;
+        margin-left: 0px;
+        background-color: #00000000;
+        border: 0px;
+        width: 25px;
+    }
+    .star:hover{
+        cursor: pointer;
+    }
+    .actions {
+        display:flex;
+        width:auto;
+        align-items:center;
+        gap:5px;
     }
 
 </style>

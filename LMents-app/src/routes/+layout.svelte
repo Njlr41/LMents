@@ -15,6 +15,7 @@
     main {
         flex: 1;
         padding-top:100px;
+        padding-bottom:100px;
     }
 
     /* Global Styles */
@@ -47,13 +48,13 @@
     }
 
     :global(.course-body) {
-        background-color: lightgray;
+        background-color: #D7D7D7;
         display: flex;
         flex-direction: column;
         justify-content: left;
         font-size: 15px;
-        padding-left: 15px;
-        overflow-wrap: break-word;   
+        padding: 15px;
+        overflow-wrap: break-word;
     }
 
     :global(.empty) {

@@ -47,6 +47,7 @@
         </button>
     </div> -->
     <!-- TESTING -->
+     
 {:else}
     {#each query_result?.values as course}
         {#if 

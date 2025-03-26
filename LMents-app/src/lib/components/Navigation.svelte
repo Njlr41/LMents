@@ -39,7 +39,7 @@
         background-color: #d7d7d7; 
         width: auto;
         /* min-width: 100%; */
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); 
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); 
         z-index: 1000; 
         display: flex;
         flex-direction: row;

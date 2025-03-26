@@ -74,21 +74,32 @@
                     SCUBA Diving AY 2024-2025   
                 </div>
                 <div class="course-body">
+                    <div class="assignment-title"  style="white-space: pre-line">
+                        <button class="star">
+                            {#if true}
+                                <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
+                            {:else}
+                                <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
+                            {/if}
+                        </button>
+                        Assignment Title 
+                    </div>
                     <p style="white-space: pre-line">
-                        Assignment Title <br>
-                        <br>
                         This is the Assignment Description
-                        <a href="blank" target="_blank">
-                            Assignment Link
-                        </a>
-                        True
                     </p>
-                    <button class="checkmark">
-                        {true ? '✅' : '❌'}
-                    </button>
-                    <button class="checkmark">
-                        {true ? 'YES' : 'NO'}
-                    </button>
+                    <div class="actions">
+                        <a href="blank" target="_blank">
+                            <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
+                        </a>
+
+                        <button class="checkmark">
+                            {#if true}
+                                <img src="/check_filled.svg" alt="Done" width="35" height="35" />
+                            {:else}
+                                <img src="/check_empty.svg" alt="Not Done" width="35" height="35" />
+                            {/if}
+                        </button>
+                    </div>
                 </div>
             </div> -->
         <!-- TESTING -->
@@ -114,21 +125,31 @@
                         {/await}    
                     </div>
                     <div class="course-body">
+                        <div class="assignment-title"  style="white-space: pre-line">
+                            <button on:click={() => priority(assignment.assignment_id, assignment.priority)} class="star">
+                                {#if (assignment.priority)}
+                                    <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
+                                {:else}
+                                    <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
+                                {/if}
+                            </button>
+                            {assignment.title}
+                        </div>
                         <p style="white-space: pre-line">
-                            {assignment.title} <br>
-                            <br>
                             {assignment.description}
-                            <a href={assignment.link} target="_blank">
-                                Assignment Link
-                            </a>
-                            {assignment.hidden}
                         </p>
-                        <button on:click={() => checkmark(assignment.assignment_id, assignment.completed)} class="checkmark">
-                            {assignment.completed ? '✅' : '❌'}
-                        </button>
-                        <button on:click={() => priority(assignment.assignment_id, assignment.priority)} class="checkmark">
-                            {assignment.priority ? 'YES' : 'NO'}
-                        </button>
+                        <div class="actions">
+                            <a href={assignment.link} target="_blank">
+                                <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
+                            </a>
+                            <button on:click={() => checkmark(assignment.assignment_id, assignment.completed)} class="checkmark">
+                                {#if true}
+                                    <img src="/check_filled.svg" alt="Done" width="35" height="35" />
+                                {:else}
+                                    <img src="/check_empty.svg" alt="Not Done" width="35" height="35" />
+                                {/if}
+                            </button>
+                        </div>
                     </div>
                 </div>
             {/if}
@@ -140,9 +161,35 @@
 
 
     .checkmark {
-        font-size: 20px;
         padding: 0px;
         margin-left: auto;
+        background-color: #00000000;
+        border: 0px;
+    }
+    .checkmark:hover{
+        cursor: pointer;
+    }
+    .star {
+        padding: 0px;
+        background-color: #00000000;
+        border: 0px;
+    }
+    .star:hover{
+        cursor: pointer;
+    }
+    .actions {
+        display:flex;
+        width:auto;
+        align-items: center;
+        gap:auto;
+    }
+    .assignment-title {
+        font-size: 17px;
+        font-weight: bold;
+        display:flex;
+        width:auto;
+        align-items:center;
+        gap:5px;
     }
 
 </style>
