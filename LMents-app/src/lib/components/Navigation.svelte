@@ -39,11 +39,7 @@
     }
     .gclassroom {
         background-color: #48AC55;
-    }
-    .canvas {
-        background-color: #E05545;
-    }
-    
+    }    
     button:hover {
         box-shadow: 3px 3px 7px rgba(51, 51, 51, 0.201);
         background-color: #ed9d27;
@@ -51,8 +47,5 @@
     }
     .gclassroom:hover {
         background-color: #299c59;
-    }
-    .canvas:hover {
-        background-color: #da3a3a;
     }
 </style>
