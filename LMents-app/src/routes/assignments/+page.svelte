@@ -5,6 +5,8 @@
     export let data;
     let query_result = null;
     let dbName = "MyDatabase"
+    let selectedFilter = 'all';
+
     function intToMonth(int){
         const months = ['January', 'February', 'March', 'April'
                        ,'May', 'June', 'July', 'August', 'September'
@@ -45,17 +47,78 @@
     }
 </script>
 
+<div class="title-container">
+    <div class="title"> Assignments </div>
+
+    <div class="filter-container">
+        <select bind:value={selectedFilter}>
+        <option value="all">All</option>
+        <option value="visible">Visible Only</option>
+        <option value="hidden">Hidden Only</option>
+        </select>
+    </div>
+</div>
+
 <div>
     {#if !query_result?.values}
-        No Assignments
+        <div class ="empty">
+            No Assignments
+        </div>
+
+        <!-- TESTING SAMPLE ASSIGNMENT -->
+        <!-- <div class="course-container-date">
+            <div class="course-date">
+                June 4, 2024
+            </div>
+        </div>
+            <div class="course-container-name">
+                <div class="course-name">
+                    SCUBA Diving AY 2024-2025   
+                </div>
+                <div class="course-body">
+                    <div class="assignment-title"  style="white-space: pre-line">
+                        <button class="star">
+                            {#if true}
+                                <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
+                            {:else}
+                                <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
+                            {/if}
+                        </button>
+                        Assignment Title 
+                    </div>
+                    <p style="white-space: pre-line">
+                        This is the Assignment Description
+                    </p>
+                    <div class="actions">
+                        <a href="blank" target="_blank">
+                            <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
+                        </a>
+
+                        <button class="checkmark">
+                            {#if true}
+                                <img src="/check_filled.svg" alt="Done" width="35" height="35" />
+                            {:else}
+                                <img src="/check_empty.svg" alt="Not Done" width="35" height="35" />
+                            {/if}
+                        </button>
+                    </div>
+                </div>
+            </div> -->
+        <!-- TESTING -->
+
     {:else}
         {#each query_result?.values as assignment}
+            {#if 
+                selectedFilter === 'all' || 
+                (selectedFilter === 'visible' && !assignment.hidden) || 
+                (selectedFilter === 'hidden' && assignment.hidden)
+            }
             <div class="course-container-date">
                 <div class="course-date">
                     {stringToDate(assignment.due_date)}
                 </div>
             </div>
-            <div class="course-container-name">
+                <div class="course-container-name">
                     <div class="course-name">
                         {#await queryCourseName(assignment.course_id) then course_name}
                             {course_name[0].name}
@@ -64,38 +127,71 @@
                         {/await}    
                     </div>
                     <div class="course-body">
+                        <div class="assignment-title"  style="white-space: pre-line">
+                            <button on:click={() => priority(assignment.assignment_id, assignment.priority)} class="star">
+                                {#if (assignment.priority)}
+                                    <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
+                                {:else}
+                                    <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
+                                {/if}
+                            </button>
+                            {assignment.title}
+                        </div>
                         <p style="white-space: pre-line">
-                            {assignment.title} <br>
-                            <br>
                             {assignment.description}
-                            <a href={assignment.link} target="_blank">
-                                Assignment Link
-                            </a>
-                            {assignment.hidden}
                         </p>
-                        <button on:click={() => checkmark(assignment.assignment_id, assignment.completed)} class="checkmark">
-                            {assignment.completed ? '✅' : '❌'}
-                        </button>
-                        <button on:click={() => priority(assignment.assignment_id, assignment.priority)} class="checkmark">
-                            {assignment.priority ? 'YES' : 'NO'}
-                        </button>
+                        <div class="actions">
+                            <a href={assignment.link} target="_blank">
+                                <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
+                            </a>
+                            <button on:click={() => checkmark(assignment.assignment_id, assignment.completed)} class="checkmark">
+                                {#if assignment.completed}
+                                    <img src="/check_filled.svg" alt="Done" width="35" height="35" />
+                                {:else}
+                                    <img src="/check_empty.svg" alt="Not Done" width="35" height="35" />
+                                {/if}
+                            </button>
+                        </div>
                     </div>
-            </div>
+                </div>
+            {/if}
         {/each}
     {/if}
 </div>
 
 <style>
 
-    * {
-            font-family: verdana;
-            color: #1e1e1e;
-        }
 
     .checkmark {
-        font-size: 20px;
         padding: 0px;
         margin-left: auto;
+        background-color: #00000000;
+        border: 0px;
+    }
+    .checkmark:hover{
+        cursor: pointer;
+    }
+    .star {
+        padding: 0px;
+        background-color: #00000000;
+        border: 0px;
+    }
+    .star:hover{
+        cursor: pointer;
+    }
+    .actions {
+        display:flex;
+        width:auto;
+        align-items: center;
+        gap:auto;
+    }
+    .assignment-title {
+        font-size: 17px;
+        font-weight: bold;
+        display:flex;
+        width:auto;
+        align-items:center;
+        gap:5px;
     }
 
 </style>

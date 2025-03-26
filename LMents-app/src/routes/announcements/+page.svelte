@@ -4,6 +4,9 @@
     export let data;
     let query_result = null
     let dbName = "MyDatabase"
+    let selectedFilter = 'all';
+
+
     function intToMonth(int){
         const months = ['January', 'February', 'March', 'April'
                        ,'May', 'June', 'July', 'August', 'September'
@@ -35,51 +38,115 @@
     }
 </script>
 
+<div class="title-container">
+    <div class="title"> Announcements </div>
+
+    <div class="filter-container">
+        <select bind:value={selectedFilter}>
+        <option value="all">All</option>
+        <option value="visible">Visibile only</option>
+        <option value="hidden">Hidden only</option>
+        </select>
+    </div>
+</div>
+
 <div>
     {#if !query_result?.values}
-        No Announcements
+        <div class ="empty">
+            No Announcements
+        </div>
+
+        <!-- TESTING SAMPLE ANNOUNCEMENT -->
+        <!-- <div class ="course-container-date">
+            <div class="course-date">
+                June 4, 2024
+            </div>
+        </div>
+        <div class="course-container-name">
+            <div class="course-name">
+                SCUBA Diving AY 2024-2025
+            </div>
+            <div class="course-body">
+                <div class="actions">
+                    <button class="star">
+                        {#if true}
+                            <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
+                        {:else}
+                            <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
+                        {/if}
+                    </button>
+                    <a href="blank" target="_blank">
+                        <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
+                    </a>
+                </div>
+                <p style="white-space: pre-line">
+                    This is the announcement text sample. <br>
+                </p>
+            </div>
+        </div> -->
+        <!-- TESTING -->
+
     {:else}
         {#each query_result?.values as announcement}
-            <div class ="course-container-date">
-                <div class="course-date">
-                    {stringToDate(announcement.announcement_date)}
+            {#if 
+                selectedFilter === 'all' || 
+                (selectedFilter === 'visible' && !announcement.hidden) || 
+                (selectedFilter === 'hidden' && announcement.hidden)
+            }
+                <div class ="course-container-date">
+                    <div class="course-date">
+                        {stringToDate(announcement.announcement_date)}
+                    </div>
                 </div>
-            </div>
-            <div class="course-container-name">
-                <div class="course-name">
-                    {#await queryCourseName(announcement.course_id) then course_name}
-                        {course_name[0].name}
-                    {:catch error}
-                        Error: {error}
-                    {/await}
+                <div class="course-container-name">
+                    <div class="course-name">
+                        {#await queryCourseName(announcement.course_id) then course_name}
+                            {course_name[0].name}
+                        {:catch error}
+                            Error: {error}
+                        {/await}
+                    </div>
+                    <div class="course-body">
+                        <div class="actions">
+                            <button on:click={() => priority(announcement.announcement_id, announcement.priority)} class="star">
+                                <!-- {true ? 'YES' : 'NO'} -->
+                                {#if announcement.priority}
+                                    <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
+                                {:else}
+                                    <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
+                                {/if}
+                            </button>
+                            <a href={announcement.link} target="_blank">
+                                <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
+                            </a>
+                        </div>
+                        <p style="white-space: pre-line">
+                            {announcement.text} <br>
+                        </p>
+                    </div>
                 </div>
-                <div class="course-body">
-                    <p style="white-space: pre-line">
-                        {announcement.text} <br>
-                        <a href={announcement.link} target="_blank">
-                            Announcement Link
-                        </a>
-                        {announcement.hidden}
-                    </p>
-                    <button on:click={() => priority(announcement.announcement_id, announcement.priority)} class="checkmark">
-                        {announcement.priority ? 'YES' : 'NO'}
-                    </button>
-                </div>
-            </div>
+            {/if}
         {/each}
     {/if}
 </div>
 
 <style>
 
-    * {
-        font-family: verdana;
-        color: #1e1e1e;
-    }
-    .checkmark {
-        font-size: 20px;
+    .star {
         padding: 0px;
-        margin-left: auto;
+        margin-left: 0px;
+        background-color: #00000000;
+        border: 0px;
+        width: 25px;
+    }
+    .star:hover{
+        cursor: pointer;
+    }
+    .actions {
+        display:flex;
+        width:auto;
+        align-items:center;
+        gap:5px;
     }
 
 </style>

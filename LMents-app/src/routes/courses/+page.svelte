@@ -4,7 +4,8 @@
     let dbName = "MyDatabase"
     let GClass = data.GClass
     let Canvas = data.Canvas
-    
+    let selectedFilter = 'all';
+
     let query_result = null;
     async function getClasses(){
         await initDB(dbName)
@@ -27,32 +28,89 @@
         query_result = await queryCourses()
     }
 </script>
+
+<div class="title-container">
+    <div class="title"> Classes </div>
+
+    <div class="filter-container">
+        <select bind:value={selectedFilter}>
+          <option value='all'>All</option>
+          <option value='visible'>Visibile only</option>
+          <option value='hidden'>Hidden only</option>
+        </select>
+    </div>
+</div>
+
 {#if !query_result?.values}
-    <div> No Classes </div>
+    <div class="empty"> No Classes </div>
+
+    <!-- TESTING SAMPLE COURSE -->
+    <!-- <div class="course-container">
+        <div class="course">
+            SCUBA Diving AY 2024-2025
+            <button class="hidden">
+                {#if true}
+                    <img src="/invisible.svg" alt="Hidden" width="35" height="35" />
+                {:else}
+                    <img src="/visible.svg" alt="Visible" width="35" height="35" />
+                {/if}
+            </button>
+        </div>
+    </div> -->
+    <!-- TESTING -->
+
 {:else}
     {#each query_result?.values as course}
-    <div class="course">
-        {course.name}
-        <button on:click={() => hidden(course.id, course.hidden)} class = "">
-            {course.hidden ? 'HIDDEN' : 'VISIBLE'}
-        </button>
-    </div>
+        {#if 
+            selectedFilter === 'all' || 
+            (selectedFilter === 'visible' && !course.hidden) || 
+            (selectedFilter === 'hidden' && course.hidden)
+        }
+            <div class="course-container">
+                <div class="course">
+                    {course.name}
+                    <button on:click={() => hidden(course.id, course.hidden)} class="hidden">
+                        {#if course.hidden}
+                            <img src="/invisible.svg" alt="Hidden" width="35" height="35" />
+                        {:else}
+                            <img src="/visible.svg" alt="Visible" width="35" height="35" />
+                        {/if}
+                    </button>
+                </div>
+            </div>
+        {/if}
     {/each}
 {/if}
 
 <style>
-    * {
-        font-family: verdana;
-        color: #1e1e1e;
-    }
+    
 
-    .course {
+    .course-container {
         background-color: #48AC55;
         font-size: 20px;
         color: #f7f7f7;
-        padding: 5px;
+        font-weight: bold;
+        padding: 10px;
+        margin-left: 2rem;
+        margin-right: 2rem;
         text-align: center;
         border-radius: 12px;
         margin-bottom: 15px;
+    }
+    .course {
+        display: flex;
+        width:auto;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        color: #f7f7f7;
+    }
+    .hidden {
+        padding: 0px;
+        background-color: #00000000;
+        border: 0px;
+    }
+    .hidden:hover{
+        cursor: pointer;
     }
 </style>
