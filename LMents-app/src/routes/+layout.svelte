@@ -15,6 +15,7 @@
     main {
         flex: 1;
         padding: 2rem;
+        padding-top:100px;
     }
 
     /* Global Styles */
