@@ -89,31 +89,18 @@
         border: 0px;
         border-radius: 12px;
         /* box-shadow: 2px 3px 4px #3333332b; */
-<<<<<<< HEAD
         background-color: #d7d7d700;
     }
     .logo{
         padding: 0px;
     }
-=======
-        background-color: #F2B344;
-    }
-    .gclassroom {
-        background-color: #48AC55;
-    }    
->>>>>>> bbc16edf9cbd20803ba8ff18bd5c06e7cac202a8
     button:hover {
         /* box-shadow: 3px 3px 7px rgba(51, 51, 51, 0.201); */
         background-color: #b7b7b7;
         cursor: pointer;
     }
-<<<<<<< HEAD
     .logo:hover{
         background-color: #d7d7d700;
         cursor: pointer;
-=======
-    .gclassroom:hover {
-        background-color: #299c59;
->>>>>>> bbc16edf9cbd20803ba8ff18bd5c06e7cac202a8
     }
 </style>
