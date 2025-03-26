@@ -8,7 +8,7 @@ vi.mock('$app/navigation');
 describe('Navigation', () => {
   test('Home Button is Functional', () => {
     render(Navigation);
-    const Home = screen.getByText('Home');
+    const Home = screen.getByAltText('Lments Logo');
     expect(Home).toBeTruthy();
     fireEvent.click(Home);
     expect(goto).toHaveBeenCalledWith('/');
@@ -16,7 +16,7 @@ describe('Navigation', () => {
   
   test('Login Button is Functional', () => {
     render(Navigation);
-    const Login = screen.getByText('Login');
+    const Login = screen.getByAltText('Login');
     expect(Login).toBeTruthy();
     fireEvent.click(Login);
     expect(goto).toHaveBeenCalledWith('/signup');
@@ -24,7 +24,7 @@ describe('Navigation', () => {
 
   test('Courses Button is Functional', () => {
     render(Navigation);
-    const Courses = screen.getByText('Courses');
+    const Courses = screen.getByAltText('Courses');
     expect(Courses).toBeTruthy();
     fireEvent.click(Courses);
     expect(goto).toHaveBeenCalledWith('/courses');
@@ -32,7 +32,7 @@ describe('Navigation', () => {
 
   test('Assignments Button is Functional', () => {
     render(Navigation);
-    const Assignments = screen.getByText('Assignments');
+    const Assignments = screen.getByAltText('Assignments');
     expect(Assignments).toBeTruthy();
     fireEvent.click(Assignments);
     expect(goto).toHaveBeenCalledWith('/assignments');
@@ -40,17 +40,9 @@ describe('Navigation', () => {
 
   test('Announcements Button is Functional', () => {
     render(Navigation);
-    const Announcements = screen.getByText('Announcements');
+    const Announcements = screen.getByAltText('Announcements');
     expect(Announcements).toBeTruthy();
     fireEvent.click(Announcements);
     expect(goto).toHaveBeenCalledWith('/announcements');
-  });
-
-  test('Canvas Button is Functional', () => {
-    render(Navigation);
-    const Canvas = screen.getByText('Canvas');
-    expect(Canvas).toBeTruthy();
-    fireEvent.click(Canvas);
-    expect(goto).toHaveBeenCalled('/canvas')
   });
 })
