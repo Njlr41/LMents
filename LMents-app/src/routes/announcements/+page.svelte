@@ -4,6 +4,9 @@
     export let data;
     let query_result = null
     let dbName = "MyDatabase"
+    let selectedFilter = 'all';
+
+
     function intToMonth(int){
         const months = ['January', 'February', 'March', 'April'
                        ,'May', 'June', 'July', 'August', 'September'
@@ -34,38 +37,50 @@
         query_result = await queryAnnouncements()
     }
 </script>
-
+<div class="filter-container">
+    <select bind:value={selectedFilter}>
+      <option value="all">All</option>
+      <option value="visible">Visibile only</option>
+      <option value="hidden">Hidden only</option>
+    </select>
+</div>
 <div>
     {#if !query_result?.values}
         No Announcements
     {:else}
         {#each query_result?.values as announcement}
-            <div class ="course-container-date">
-                <div class="course-date">
-                    {stringToDate(announcement.announcement_date)}
+            {#if 
+                selectedFilter === 'all' || 
+                (selectedFilter === 'visible' && !announcement.hidden) || 
+                (selectedFilter === 'hidden' && announcement.hidden)
+            }
+                <div class ="course-container-date">
+                    <div class="course-date">
+                        {stringToDate(announcement.announcement_date)}
+                    </div>
                 </div>
-            </div>
-            <div class="course-container-name">
-                <div class="course-name">
-                    {#await queryCourseName(announcement.course_id) then course_name}
-                        {course_name[0].name}
-                    {:catch error}
-                        Error: {error}
-                    {/await}
+                <div class="course-container-name">
+                    <div class="course-name">
+                        {#await queryCourseName(announcement.course_id) then course_name}
+                            {course_name[0].name}
+                        {:catch error}
+                            Error: {error}
+                        {/await}
+                    </div>
+                    <div class="course-body">
+                        <p style="white-space: pre-line">
+                            {announcement.text} <br>
+                            <a href={announcement.link} target="_blank">
+                                Announcement Link
+                            </a>
+                            {announcement.hidden}
+                        </p>
+                        <button on:click={() => priority(announcement.announcement_id, announcement.priority)} class="checkmark">
+                            {announcement.priority ? 'YES' : 'NO'}
+                        </button>
+                    </div>
                 </div>
-                <div class="course-body">
-                    <p style="white-space: pre-line">
-                        {announcement.text} <br>
-                        <a href={announcement.link} target="_blank">
-                            Announcement Link
-                        </a>
-                        {announcement.hidden}
-                    </p>
-                    <button on:click={() => priority(announcement.announcement_id, announcement.priority)} class="checkmark">
-                        {announcement.priority ? 'YES' : 'NO'}
-                    </button>
-                </div>
-            </div>
+            {/if}
         {/each}
     {/if}
 </div>

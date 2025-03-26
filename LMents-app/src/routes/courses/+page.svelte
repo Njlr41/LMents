@@ -4,7 +4,8 @@
     let dbName = "MyDatabase"
     let GClass = data.GClass
     let Canvas = data.Canvas
-    
+    let selectedFilter = 'all';
+
     let query_result = null;
     async function getClasses(){
         await initDB(dbName)
@@ -27,16 +28,29 @@
         query_result = await queryCourses()
     }
 </script>
+<div class="filter-container">
+    <select bind:value={selectedFilter}>
+      <option value='all'>All</option>
+      <option value='visible'>Visibile only</option>
+      <option value='hidden'>Hidden only</option>
+    </select>
+</div>
 {#if !query_result?.values}
     <div> No Classes </div>
 {:else}
     {#each query_result?.values as course}
-    <div class="course">
-        {course.name}
-        <button on:click={() => hidden(course.id, course.hidden)} class = "">
-            {course.hidden ? 'HIDDEN' : 'VISIBLE'}
-        </button>
-    </div>
+        {#if 
+            selectedFilter === 'all' || 
+            (selectedFilter === 'visible' && !course.hidden) || 
+            (selectedFilter === 'hidden' && course.hidden)
+        }
+            <div class="course">
+                {course.name}
+                <button on:click={() => hidden(course.id, course.hidden)} class = "">
+                    {course.hidden ? 'HIDDEN' : 'VISIBLE'}
+                </button>
+            </div>
+        {/if}
     {/each}
 {/if}
 

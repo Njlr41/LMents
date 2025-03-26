@@ -5,6 +5,8 @@
     export let data;
     let query_result = null;
     let dbName = "MyDatabase"
+    let selectedFilter = 'all';
+
     function intToMonth(int){
         const months = ['January', 'February', 'March', 'April'
                        ,'May', 'June', 'July', 'August', 'September'
@@ -45,17 +47,30 @@
     }
 </script>
 
+<div class="filter-container">
+    <select bind:value={selectedFilter}>
+      <option value="all">All</option>
+      <option value="visible">Visible Only</option>
+      <option value="hidden">Hidden Only</option>
+    </select>
+</div>
+
 <div>
     {#if !query_result?.values}
         No Assignments
     {:else}
         {#each query_result?.values as assignment}
+            {#if 
+                selectedFilter === 'all' || 
+                (selectedFilter === 'visible' && !assignment.hidden) || 
+                (selectedFilter === 'hidden' && assignment.hidden)
+            }
             <div class="course-container-date">
                 <div class="course-date">
                     {stringToDate(assignment.due_date)}
                 </div>
             </div>
-            <div class="course-container-name">
+                <div class="course-container-name">
                     <div class="course-name">
                         {#await queryCourseName(assignment.course_id) then course_name}
                             {course_name[0].name}
@@ -80,7 +95,8 @@
                             {assignment.priority ? 'YES' : 'NO'}
                         </button>
                     </div>
-            </div>
+                </div>
+            {/if}
         {/each}
     {/if}
 </div>
