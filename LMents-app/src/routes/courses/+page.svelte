@@ -70,7 +70,7 @@
                 <div class="course">
                     {course.name}
                     <button on:click={() => hidden(course.id, course.hidden)} class="hidden">
-                        {#if true}
+                        {#if course.hidden}
                             <img src="/invisible.svg" alt="Hidden" width="35" height="35" />
                         {:else}
                             <img src="/visible.svg" alt="Visible" width="35" height="35" />

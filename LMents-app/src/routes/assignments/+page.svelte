@@ -145,7 +145,7 @@
                                 <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
                             </a>
                             <button on:click={() => checkmark(assignment.assignment_id, assignment.completed)} class="checkmark">
-                                {#if true}
+                                {#if assignment.completed}
                                     <img src="/check_filled.svg" alt="Done" width="35" height="35" />
                                 {:else}
                                     <img src="/check_empty.svg" alt="Not Done" width="35" height="35" />

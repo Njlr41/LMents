@@ -110,7 +110,7 @@
                         <div class="actions">
                             <button on:click={() => priority(announcement.announcement_id, announcement.priority)} class="star">
                                 <!-- {true ? 'YES' : 'NO'} -->
-                                {#if true}
+                                {#if announcement.priority}
                                     <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
                                 {:else}
                                     <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
