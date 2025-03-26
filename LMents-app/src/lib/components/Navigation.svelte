@@ -25,9 +25,8 @@
     <div class = "head">
         <div></div>
         <button class = "logo" on:click={() => goto('/')}>
-            <img src="/LMents_logo.svg" alt="Lments Logo" width="50" height="50" />
+            <img src="/LMents_logo.svg" alt="LMents Logo" width="50" height="50" />
         </button>
-        <!-- <img src="/LMents_logo.svg" alt="Lments Logo" width="50" height="50" /> -->
     </div>
     
 <style>

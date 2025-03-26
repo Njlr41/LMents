@@ -8,7 +8,7 @@ vi.mock('$app/navigation');
 describe('Navigation', () => {
   test('Home Button is Functional', () => {
     render(Navigation);
-    const Home = screen.getByAltText('Lments Logo');
+    const Home = screen.getByAltText('LMents Logo');
     expect(Home).toBeTruthy();
     fireEvent.click(Home);
     expect(goto).toHaveBeenCalledWith('/');
