@@ -28,6 +28,7 @@
         query_result = await queryCourses()
     }
 </script>
+<div class="title"> Classes </div>
 <div class="filter-container">
     <select bind:value={selectedFilter}>
       <option value='all'>All</option>
@@ -36,7 +37,16 @@
     </select>
 </div>
 {#if !query_result?.values}
-    <div> No Classes </div>
+    <div class="empty"> No Classes </div>
+
+    <!-- TESTING SAMPLE COURSE -->
+    <!-- <div class="course">
+        SCUBA Diving AY 2024-2025
+        <button class = "">
+            {true ? 'HIDDEN' : 'VISIBLE'}
+        </button>
+    </div> -->
+    <!-- TESTING -->
 {:else}
     {#each query_result?.values as course}
         {#if 
@@ -55,16 +65,16 @@
 {/if}
 
 <style>
-    * {
-        font-family: verdana;
-        color: #1e1e1e;
-    }
+    
 
     .course {
         background-color: #48AC55;
         font-size: 20px;
         color: #f7f7f7;
-        padding: 5px;
+        font-weight: bold;
+        padding: 10px;
+        margin-left: 2rem;
+        margin-right: 2rem;
         text-align: center;
         border-radius: 12px;
         margin-bottom: 15px;

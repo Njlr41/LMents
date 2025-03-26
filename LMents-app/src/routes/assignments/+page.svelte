@@ -47,6 +47,8 @@
     }
 </script>
 
+<div class="title"> Assignments </div>
+
 <div class="filter-container">
     <select bind:value={selectedFilter}>
       <option value="all">All</option>
@@ -57,7 +59,40 @@
 
 <div>
     {#if !query_result?.values}
-        No Assignments
+        <div class ="empty">
+            No Assignments
+        </div>
+
+        <!-- TESTING SAMPLE ASSIGNMENT -->
+        <!-- <div class="course-container-date">
+            <div class="course-date">
+                June 4, 2024
+            </div>
+        </div>
+            <div class="course-container-name">
+                <div class="course-name">
+                    SCUBA Diving AY 2024-2025   
+                </div>
+                <div class="course-body">
+                    <p style="white-space: pre-line">
+                        Assignment Title <br>
+                        <br>
+                        This is the Assignment Description
+                        <a href="blank" target="_blank">
+                            Assignment Link
+                        </a>
+                        True
+                    </p>
+                    <button class="checkmark">
+                        {true ? '✅' : '❌'}
+                    </button>
+                    <button class="checkmark">
+                        {true ? 'YES' : 'NO'}
+                    </button>
+                </div>
+            </div> -->
+        <!-- TESTING -->
+
     {:else}
         {#each query_result?.values as assignment}
             {#if 
@@ -103,10 +138,6 @@
 
 <style>
 
-    * {
-            font-family: verdana;
-            color: #1e1e1e;
-        }
 
     .checkmark {
         font-size: 20px;

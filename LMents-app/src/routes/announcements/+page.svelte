@@ -37,6 +37,9 @@
         query_result = await queryAnnouncements()
     }
 </script>
+
+<div class="title"> Announcements </div>
+
 <div class="filter-container">
     <select bind:value={selectedFilter}>
       <option value="all">All</option>
@@ -46,7 +49,35 @@
 </div>
 <div>
     {#if !query_result?.values}
-        No Announcements
+        <div class ="empty">
+            No Announcements
+        </div>
+
+        <!-- TESTING SAMPLE ANNOUNCEMENT -->
+        <!-- <div class ="course-container-date">
+            <div class="course-date">
+                June 4, 2024
+            </div>
+        </div>
+        <div class="course-container-name">
+            <div class="course-name">
+                SCUBA Diving AY 2024-2025
+            </div>
+            <div class="course-body">
+                <p style="white-space: pre-line">
+                    This is the announcement text sample. <br>
+                    <a href="blank" target="_blank">
+                        Announcement Link
+                    </a>
+                    false
+                </p>
+                <button class="checkmark">
+                    {true ? 'YES' : 'NO'}
+                </button>
+            </div>
+        </div> -->
+        <!-- TESTING -->
+
     {:else}
         {#each query_result?.values as announcement}
             {#if 
@@ -87,10 +118,6 @@
 
 <style>
 
-    * {
-        font-family: verdana;
-        color: #1e1e1e;
-    }
     .checkmark {
         font-size: 20px;
         padding: 0px;

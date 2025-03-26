@@ -37,6 +37,8 @@
 </script>
 <!-- I really don't know how safe this is lol -->
 
+<div class="title"> Accounts </div>
+
 {#if platform == 'web'} 
 <form class="auth-form" method="post" action="?/OAuth2">
     <button class="gsi-material-button">
