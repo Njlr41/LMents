@@ -47,14 +47,16 @@
     }
 </script>
 
-<div class="title"> Assignments </div>
+<div class="title-container">
+    <div class="title"> Assignments </div>
 
-<div class="filter-container">
-    <select bind:value={selectedFilter}>
-      <option value="all">All</option>
-      <option value="visible">Visible Only</option>
-      <option value="hidden">Hidden Only</option>
-    </select>
+    <div class="filter-container">
+        <select bind:value={selectedFilter}>
+        <option value="all">All</option>
+        <option value="visible">Visible Only</option>
+        <option value="hidden">Hidden Only</option>
+        </select>
+    </div>
 </div>
 
 <div>

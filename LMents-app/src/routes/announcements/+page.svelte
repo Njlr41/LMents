@@ -38,15 +38,18 @@
     }
 </script>
 
-<div class="title"> Announcements </div>
+<div class="title-container">
+    <div class="title"> Announcements </div>
 
-<div class="filter-container">
-    <select bind:value={selectedFilter}>
-      <option value="all">All</option>
-      <option value="visible">Visibile only</option>
-      <option value="hidden">Hidden only</option>
-    </select>
+    <div class="filter-container">
+        <select bind:value={selectedFilter}>
+        <option value="all">All</option>
+        <option value="visible">Visibile only</option>
+        <option value="hidden">Hidden only</option>
+        </select>
+    </div>
 </div>
+
 <div>
     {#if !query_result?.values}
         <div class ="empty">

@@ -75,6 +75,38 @@
         margin-bottom: 5px;
         text-align: left;
     }
+    :global(.title-container) {
+        width: auto; 
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    /* hidden/visible/all view dropdown lists */
+    :global(.filter-container) {
+        position: relative;
+    }
+    :global(.filter-container select) {
+        appearance: none;
+        width: 100%;
+        padding: 5px 32px 5px 10px;
+        background-color: #d7d7d7;
+        border: 0px solid #000000;
+        border-radius: 0.5rem;
+        color: #272727;
+        cursor: pointer;
+    }
+    /* dropdown arrow */
+    :global(.filter-container::after) {
+    --arrow: 0.4rem;
+    position: absolute;
+    content: "";
+    right: 1rem;
+    border-left: var(--arrow) solid transparent;
+    border-right: var(--arrow) solid transparent;
+    border-top: var(--arrow) solid #909090;
+    top: 40%;
+    }
+
     :global(*) {
         font-family: verdana;
         color: #272727;
