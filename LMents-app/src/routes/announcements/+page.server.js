@@ -40,7 +40,6 @@ export async function load({cookies}) {
     i++;
   }
   // Sort and Group announcements by Date and Course 
-  full_announcement_list.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)});
   console.log(full_announcement_list);
   return{announcements: full_announcement_list};
 }

@@ -5,7 +5,6 @@
     let GClass = data.GClass
     let Canvas = data.Canvas
     let selectedFilter = 'all';
-
     let query_result = null;
     async function getClasses(){
         await initDB(dbName)

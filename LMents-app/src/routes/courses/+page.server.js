@@ -13,7 +13,7 @@ async function getGoogleClassroomClasses(accessToken, cookies) {
   // Error check
   if (!response.ok) {
     console.log('Error Fetching Google Classroom Classes:', response.status, await response.text());
-    return;
+    return {}
   }
   // Get response
   const courses = await response.json();
@@ -40,7 +40,7 @@ async function getCanvasClasses(accessToken, cookies) {
   // Error check
   if (!response.ok) {
       console.log('Error Fetching Canvas Classes:', response.status, await response.text());
-      return;
+      return {};
   }
   // Get response
   const courses = await response.json();
