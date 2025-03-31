@@ -12,20 +12,17 @@ async function getGoogleClassroomClasses(accessToken, cookies) {
   });
   // Error check
   if (!response.ok) {
-    console.log('Error Fetching Google Classroom Classes:', response.status, await response.text());
+    console.error('Error Fetching Google Classroom Classes:', response.status, await response.text());
     return {}
   }
   // Get response
   const courses = await response.json();
-  // Sort the courses by date
-  courses.courses.sort(function(a, b){return new Date(b.creationTime) - new Date(a.creationTime)});
-
   let course_ids = [];
   for (let i = 0; i < courses.courses.length; i++) {
     course_ids = [ ...course_ids, courses.courses[i].id];
   }
   // Store course_dict in cookies
-  cookies.set('course_ids', JSON.stringify(course_ids), {path: '/'});
+  cookies.set('GClass_course_ids', JSON.stringify(course_ids), {path: '/'});
   return courses.courses;
   }
 
@@ -39,11 +36,16 @@ async function getCanvasClasses(accessToken, cookies) {
   });
   // Error check
   if (!response.ok) {
-      console.log('Error Fetching Canvas Classes:', response.status, await response.text());
+      console.error('Error Fetching Canvas Classes:', response.status, await response.text());
       return {};
   }
   // Get response
   const courses = await response.json();
+  let course_ids = []
+  for (let i = 0; i < courses.length; i++) {
+    course_ids = [ ...course_ids, courses[i].id]
+  }
+  cookies.set('Canvas_course_ids', JSON.stringify(course_ids), {path: '/'})
   return courses;
 }
 

@@ -22,11 +22,18 @@
 
     async function getAnnouncements(){
         await initDB(dbName)
-        for (let i = 0; i < data.announcements.length; i++){
-            let date = new Date(data.announcements[i].creationTime)
-            await insertAnnouncementData(data.announcements[i].id, data.announcements[i].courseId, data.announcements[i].text
+        for (let i = 0; i < data.GClass.length; i++){
+            let date = new Date(data.GClass[i].creationTime)
+            await insertAnnouncementData(data.GClass[i].id, data.GClass[i].courseId, data.GClass[i].text
                                         ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
-                                        ,data.announcements[i].alternateLink, false, false)
+                                        ,data.GClass[i].alternateLink, false, false)
+        }
+        for (let j = 0; j < data.Canvas.length; j++){
+            let date = new Date(data.Canvas[j].posted_at)
+            await insertAnnouncementData(data.Canvas[j].id, data.Canvas[j].context_code.slice(7), data.Canvas[j].message
+                                        ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
+                                        ,data.Canvas[j].url, false, false
+            )
         }
         query_result = await queryAnnouncements()
     }
@@ -55,37 +62,6 @@
         <div class ="empty">
             No Announcements
         </div>
-
-        <!-- TESTING SAMPLE ANNOUNCEMENT -->
-        <!-- <div class ="course-container-date">
-            <div class="course-date">
-                June 4, 2024
-            </div>
-        </div>
-        <div class="course-container-name">
-            <div class="course-name">
-                SCUBA Diving AY 2024-2025
-            </div>
-            <div class="course-body">
-                <div class="actions">
-                    <button class="star">
-                        {#if true}
-                            <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
-                        {:else}
-                            <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
-                        {/if}
-                    </button>
-                    <a href="blank" target="_blank">
-                        <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
-                    </a>
-                </div>
-                <p style="white-space: pre-line">
-                    This is the announcement text sample. <br>
-                </p>
-            </div>
-        </div> -->
-        <!-- TESTING -->
-
     {:else}
         {#each query_result?.values as announcement}
             {#if 
