@@ -1,8 +1,8 @@
 import { CANVAS_ACCESS_TOKEN } from '$env/static/private';
 // Function to fetch Google Classroom Announcements by CourseID from API
-async function getGoogleClassroomAnnouncements(access_token, course_ID) {
+async function getGoogleClassroomAnnouncements(access_token, course_id) {
   // Fetching announcements  
-  const response = await fetch(`https://classroom.googleapis.com/v1/courses/${course_ID}/announcements`, {
+  const response = await fetch(`https://classroom.googleapis.com/v1/courses/${course_id}/announcements`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${access_token}`,
@@ -17,8 +17,8 @@ async function getGoogleClassroomAnnouncements(access_token, course_ID) {
   return(await response.json());
   }
 // Function to fetch Canvas Announcements
-async function getCanvasAnnouncements(access_token, course_ID) {
-  const response = await fetch(`https://canvas.instructure.com/api/v1/announcements?context_codes[]=course_${course_ID}`, {
+async function getCanvasAnnouncements(access_token, course_id) {
+  const response = await fetch(`https://canvas.instructure.com/api/v1/announcements?context_codes[]=course_${course_id}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${access_token}`,

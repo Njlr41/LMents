@@ -21,18 +21,25 @@
         let x = str.split(",");
         return `${intToMonth(x[1])} ${x[2]}, ${x[0]}`
     }
-    console.log(data)
     async function getAssignments(){
         await initDB(dbName)
-        for (let i = 0; i < data.assignments.length; i++){
-            await insertAssignmentData(data.assignments[i].id, data.assignments[i].courseId
-                                      ,data.assignments[i].title, data.assignments[i].description
-                                      ,data.assignments[i].dueDate ? `${data.assignments[i].dueDate.year},${data.assignments[i].dueDate.month},${data.assignments[i].dueDate.day}`: "No Deadline"
-                                      ,data.assignments[i].alternateLink, false, false, false)
+        for (let i = 0; i < data.GClass.length; i++){
+            if (data.GClass[i].dueDate) {
+                console.log("Devil", data.GClass[i].title, data.GClass[i].dueDate.year,data.GClass[i].dueDate.month,data.GClass[i].dueDate.day)
+            }
+            await insertAssignmentData(data.GClass[i].id, data.GClass[i].courseId
+                                      ,data.GClass[i].title, data.GClass[i].description
+                                      ,data.GClass[i].dueDate ? `${data.GClass[i].dueDate.year},${data.GClass[i].dueDate.month - 1},${data.GClass[i].dueDate.day}`: "No Deadline"
+                                      ,data.GClass[i].alternateLink, false, false, false)
+        }
+        for (let j = 0; j < data.Canvas.length; j++){
+            let date = new Date(data.Canvas[j].due_at)
+            await insertAssignmentData(data.Canvas[j].id, data.Canvas[j].course_id
+                                      ,data.Canvas[j].name, data.Canvas[j].description
+                                      ,data.Canvas[j].due_at ? `${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}` : "No Deadline"
+                                      ,data.Canvas[j].html_url, false, false, false)
         }
         query_result = await queryAssignments()
-
-        console.log("RESULTS", JSON.stringify(query_result.values))
     }
     getAssignments()
     
@@ -64,48 +71,6 @@
         <div class ="empty">
             No Assignments
         </div>
-
-        <!-- TESTING SAMPLE ASSIGNMENT -->
-        <!-- <div class="course-container-date">
-            <div class="course-date">
-                June 4, 2024
-            </div>
-        </div>
-            <div class="course-container-name">
-                <div class="course-name">
-                    SCUBA Diving AY 2024-2025   
-                </div>
-                <div class="course-body">
-                    <div class="assignment-title"  style="white-space: pre-line">
-                        <button class="star">
-                            {#if true}
-                                <img src="/star_filled.svg" alt="Priority" width="25" height="25" />
-                            {:else}
-                                <img src="/star_empty.svg" alt="Non-Priority" width="25" height="25" />
-                            {/if}
-                        </button>
-                        Assignment Title 
-                    </div>
-                    <p style="white-space: pre-line">
-                        This is the Assignment Description
-                    </p>
-                    <div class="actions">
-                        <a href="blank" target="_blank">
-                            <img src="/link-simple.svg" alt="Open Link" width="30" height="30" />
-                        </a>
-
-                        <button class="checkmark">
-                            {#if true}
-                                <img src="/check_filled.svg" alt="Done" width="35" height="35" />
-                            {:else}
-                                <img src="/check_empty.svg" alt="Not Done" width="35" height="35" />
-                            {/if}
-                        </button>
-                    </div>
-                </div>
-            </div> -->
-        <!-- TESTING -->
-
     {:else}
         {#each query_result?.values as assignment}
             {#if 
