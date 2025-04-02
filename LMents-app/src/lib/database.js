@@ -241,5 +241,14 @@ export async function queryAnnouncements() {
     `)
     return res
 }
+
+export async function clearData() {
+    const sqlstr = `
+        DROP TABLE IF EXISTS announcements;
+        DROP TABLE IF EXISTS assignments;
+        DROP TABLE IF EXISTS courses;`
+    
+    await db.execute(sqlstr)
+}
 // # bluepuma77. https://github.com/bluepuma77/sveltekit-capacitor-sqlite
 // # March 10, 2025.

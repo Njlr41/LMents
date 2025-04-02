@@ -2,7 +2,7 @@
     import { SocialLogin } from "@capgo/capacitor-social-login";
     import { goto } from "$app/navigation";
     import { Capacitor } from "@capacitor/core";
-    import { enhance } from '$app/forms';
+    import { clearData, initDB } from "$lib/database.js";
 
     const AUTH_GOOGLE_ID = import.meta.env.VITE_AUTH_GOOGLE_ID;
 
@@ -35,8 +35,10 @@
     export let data
     console.log("TOF", JSON.stringify(data))
     
-    function logout(){
-
+    const dbName = "MyDatabase"
+    async function logout(){
+        await initDB(dbName)
+        await clearData()
     }
 </script>
 <!-- I really don't know how safe this is lol -->
