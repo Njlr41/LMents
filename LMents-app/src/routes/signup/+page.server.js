@@ -39,7 +39,19 @@ export const actions = {
     });
 
     return({ success: true });
-    }
+  },
+  // Delete cookies
+  mobileLogout: async ({ cookies }) => {
+    cookies.set('access_token', '', {
+      path: '/',
+      expires: new Date(0)
+    })
+  }
+}
+
+export async function load({cookies}) {
+  const access_token = cookies.get('access_token')
+  return access_token ? {logged_in: true} : {logged_in: false}
 }
 
 // # Consulting Ninja. https://www.youtube.com/watch?v=4QwcC4hfqM0

@@ -42,22 +42,6 @@
 
 {#if !query_result?.values}
     <div class="empty"> No Classes </div>
-
-    <!-- TESTING SAMPLE COURSE -->
-    <!-- <div class="course-container">
-        <div class="course">
-            SCUBA Diving AY 2024-2025
-            <button class="hidden">
-                {#if true}
-                    <img src="/invisible.svg" alt="Hidden" width="35" height="35" />
-                {:else}
-                    <img src="/visible.svg" alt="Visible" width="35" height="35" />
-                {/if}
-            </button>
-        </div>
-    </div> -->
-    <!-- TESTING -->
-
 {:else}
     {#each query_result?.values as course}
         {#if 
