@@ -3,6 +3,7 @@
     import { goto } from "$app/navigation";
     import { Capacitor } from "@capacitor/core";
     import { clearData, initDB } from "$lib/database.js";
+    import { theme_color } from "$lib/theme.js";
 
     const AUTH_GOOGLE_ID = import.meta.env.VITE_AUTH_GOOGLE_ID;
 
@@ -69,6 +70,13 @@
             Log Out 
         </button>
     </form>
+    <div class="filter-container">
+        <select bind:value={$theme_color}>
+        <option value="green">Green</option>
+        <option value="red">Red</option>
+        <option value="#4b0082">Purple</option>
+        </select>
+    </div>
 {/if}
 <style>
     .gsi-material-button {

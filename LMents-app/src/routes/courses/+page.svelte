@@ -1,5 +1,6 @@
 <script>
     import { initDB, insertCourseData, markAnnouncementsHidden, markAssignmentsHidden, markCourseHidden, queryCourses } from '$lib/database.js';
+    import { theme_color } from '$lib/theme.js';
     export let data
     let dbName = "MyDatabase"
     let GClass = data.GClass
@@ -49,7 +50,7 @@
             (selectedFilter === 'visible' && !course.hidden) || 
             (selectedFilter === 'hidden' && course.hidden)
         }
-            <div class="course-container">
+            <div class="course-container" style="background-color: {$theme_color};">
                 <div class="course">
                     {course.name}
                     <button on:click={() => hidden(course.id, course.hidden)} class="hidden">
@@ -66,10 +67,7 @@
 {/if}
 
 <style>
-    
-
     .course-container {
-        background-color: #48AC55;
         font-size: 20px;
         color: #f7f7f7;
         font-weight: bold;

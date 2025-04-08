@@ -15,7 +15,7 @@
     main {
         flex: 1;
         padding-top:100px;
-        padding-bottom:100px;
+        padding-bottom:100px;   
     }
 
     /* Global Styles */
@@ -36,7 +36,6 @@
         text-align: center;
     }
     :global(.course-name) {
-        background-color: #48AC55;
         color: #F7F7F7;
         font-weight:bold;
         border-radius: 15px 15px 0 0;

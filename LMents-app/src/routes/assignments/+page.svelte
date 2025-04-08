@@ -1,5 +1,6 @@
 <script>
     import { initDB, insertAssignmentData, markAssignmentComplete, markAssignmentPriority, queryAnnouncements, queryAssignments, queryCourseName } from '$lib/database.js';
+    import { theme_color } from '$lib/theme.js';
     import { text } from '@sveltejs/kit';
 
     export let data;
@@ -84,7 +85,7 @@
                 </div>
             </div>
                 <div class="course-container-name">
-                    <div class="course-name">
+                    <div class="course-name" style="background-color: {$theme_color};">
                         {#await queryCourseName(assignment.course_id) then course_name}
                             {course_name[0].name}
                         {:catch error}

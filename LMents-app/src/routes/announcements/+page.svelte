@@ -1,6 +1,6 @@
 <script>
     import { initDB, insertAnnouncementData, markAnnouncementPriority, queryAnnouncements, queryCourseName } from '$lib/database.js';
-
+    import { theme_color } from '$lib/theme.js';
     export let data;
     let query_result = null
     let dbName = "MyDatabase"
@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="course-container-name">
-                    <div class="course-name">
+                    <div class="course-name" style="background-color: {$theme_color};">
                         {#await queryCourseName(announcement.course_id) then course_name}
                             {course_name[0].name}
                         {:catch error}
