@@ -81,8 +81,9 @@
     .course {
         display: flex;
         width:auto;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
+        text-align: left;
         gap: 15px;
         color: #f7f7f7;
     }

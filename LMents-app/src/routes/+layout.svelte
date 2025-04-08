@@ -1,11 +1,19 @@
 <script>
     import Navigation from "$lib/components/Navigation.svelte";
+    import Sidebar from "$lib/components/Sidebar.svelte";
+
+    import { fly, slide, fade } from 'svelte/transition';
+
+    let sidebarToggle=false;
 </script>
 
-<Navigation>
-</Navigation>
+{#if sidebarToggle}
+    <Sidebar bind:sidebarToggle/>
+{/if}
 
-<main>
+<Navigation bind:sidebarToggle />
+
+<main transition:fade>
     <slot>
 
     </slot>

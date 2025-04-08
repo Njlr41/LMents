@@ -2,13 +2,15 @@
 
     import { goto } from "$app/navigation";
 
+    export let sidebarToggle = false;
+
+    function toggleSidebar() {
+        sidebarToggle = !sidebarToggle;
+    }
+
 </script>
     <!-- Navigation Buttons -->
     <div class = "footer">
-        <!-- Courses Button with Image -->
-        <button on:click={()=>{goto('/signup')}}>
-        <img src="/sign-in.svg" alt="Login"/>
-        </button>
         <!-- Courses Button with Image -->
         <button on:click={()=>{goto('/courses')}}>
         <img src="/course.svg" alt="Courses"/>
@@ -23,7 +25,9 @@
         </button>
     </div>
     <div class = "head">
-        <div></div>
+        <button class = "logo" on:click={toggleSidebar}>
+            <img src="/menu.svg" alt="Menu" width="30" height="30" />
+        </button>
         <button class = "logo" on:click={() => goto('/')}>
             <img src="/LMents_logo.svg" alt="LMents Logo" width="50" height="50" />
         </button>
@@ -39,7 +43,7 @@
         width: auto;
         /* min-width: 100%; */
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); 
-        z-index: 1000; 
+        z-index: 10; 
         display: flex;
         flex-direction: row;
         gap: 10px;
@@ -76,7 +80,7 @@
         display: flex;
         align-items: center;
         padding: 15px;
-        z-index: 1000; 
+        z-index: 10; 
         justify-content: space-between;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); 
     }
