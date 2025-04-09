@@ -55,6 +55,7 @@ export async function createAnnouncementsTable() {
                     );`
     const ret = await db.execute(sqlstr)
 }
+
 export async function initDB(dbName) {
     db = await openDB(dbName);
     if (!db) {

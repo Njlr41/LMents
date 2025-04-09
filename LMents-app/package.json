@@ -32,6 +32,7 @@
 		"@capacitor/cli": "^7.0.1",
 		"@capacitor/core": "^7.0.1",
 		"@capacitor/device": "^7.0.0",
+		"@capacitor/preferences": "^7.0.1",
 		"@capgo/capacitor-social-login": "^1.2.6",
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@tailwindcss/vite": "^4.0.7",
