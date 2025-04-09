@@ -71,13 +71,6 @@
             Log Out 
         </button>
     </form>
-    <div class="filter-container">
-        <select bind:value={$theme_color}>
-        <option value="green">Green</option>
-        <option value="red">Red</option>
-        <option value="#4b0082">Purple</option>
-        </select>
-    </div>
 {/if}
 <style>
     .gsi-material-button {

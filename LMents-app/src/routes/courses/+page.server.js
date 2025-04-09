@@ -49,13 +49,13 @@ async function getCanvasClasses(accessToken, cookies) {
   return courses;
 }
 
-// Load Classes upon loading of page
-export async function load({cookies}) {
-  const access_token = cookies.get('access_token')
-  console.log("Logged Out", access_token)
-  let GClass = await getGoogleClassroomClasses(access_token, cookies)
-  let Canvas = await getCanvasClasses(CANVAS_ACCESS_TOKEN, cookies)
-  return({GClass, Canvas});
+export const actions = {
+  courses: async ({ cookies }) => {
+    const access_token = cookies.get('access_token')
+    let GClass_result = await getGoogleClassroomClasses(access_token, cookies)
+    let Canvas_result = await getCanvasClasses(CANVAS_ACCESS_TOKEN, cookies)
+    return({GClass_result, Canvas_result})
+  }
 }
 
 

@@ -34,48 +34,48 @@ async function getCanvasAssignments(access_token, course_id) {
   return(await response.json())
 }
 // Load Assignments upon loading of page
-export async function load({cookies}) {
-  // Get access token 
-  const access_token = cookies.get('access_token');
-  // Get course_ids
-  const GClass_str_course_ids = cookies.get('GClass_course_ids');
-  const GClass_course_ids = GClass_str_course_ids ? JSON.parse(GClass_str_course_ids) : [];
-  // Create full assignment list
-  const GClass_assignment_list = [];
-  // Go through all course IDs
-  let i = 0;
-  while (i < GClass_course_ids.length) {
-    // Get the assignments for each courseID
-    const r = await getGoogleClassroomAssignments(access_token, GClass_course_ids[i]);
-    console.log("google_assignments", r)
-    if (r) {
-      // Push each assignment to the full_assignment_list
-      for (let j = 0; j < r.courseWork.length; j++){
-        GClass_assignment_list.push(r.courseWork[j]);
+export const actions = {
+  assignments: async ({ cookies }) => {
+    // Get access token 
+    const access_token = cookies.get('access_token');
+    // Get course_ids
+    const GClass_str_course_ids = cookies.get('GClass_course_ids');
+    const GClass_course_ids = GClass_str_course_ids ? JSON.parse(GClass_str_course_ids) : [];
+    // Create full assignment list
+    const GClass_assignment_list = [];
+    // Go through all course IDs
+    let i = 0;
+    while (i < GClass_course_ids.length) {
+      // Get the assignments for each courseID
+      const r = await getGoogleClassroomAssignments(access_token, GClass_course_ids[i]);
+      if (r) {
+        // Push each assignment to the full_assignment_list
+        for (let j = 0; j < r.courseWork.length; j++){
+          GClass_assignment_list.push(r.courseWork[j]);
+        }
       }
+      i++;
     }
-    i++;
-  }
-  // Get Canvas course ids from cookies
-  const Canvas_str_course_ids = cookies.get('Canvas_course_ids')
-  const Canvas_course_ids = Canvas_str_course_ids ? JSON.parse(Canvas_str_course_ids) : []
-  // Create Canvas assignment list
-  const Canvas_assignment_list = []
-  // Go through all Canvas course ids
-  i = 0
-  while (i < Canvas_course_ids.length) {
-    // Get the assignment for each course id
-    const r = await getCanvasAssignments(CANVAS_ACCESS_TOKEN, Canvas_course_ids[i])
-    console.log("canvas_assignments", r)
-    if (r) {
-      // Push each assignment to the list
-      for (let j = 0; j < r.length; j++) {
-        Canvas_assignment_list.push(r[j])
+    // Get Canvas course ids from cookies
+    const Canvas_str_course_ids = cookies.get('Canvas_course_ids')
+    const Canvas_course_ids = Canvas_str_course_ids ? JSON.parse(Canvas_str_course_ids) : []
+    // Create Canvas assignment list
+    const Canvas_assignment_list = []
+    // Go through all Canvas course ids
+    i = 0
+    while (i < Canvas_course_ids.length) {
+      // Get the assignment for each course id
+      const r = await getCanvasAssignments(CANVAS_ACCESS_TOKEN, Canvas_course_ids[i])
+      if (r) {
+        // Push each assignment to the list
+        for (let j = 0; j < r.length; j++) {
+          Canvas_assignment_list.push(r[j])
+        }
       }
+      i++
     }
-    i++
+    return{GClass_result: GClass_assignment_list, Canvas_result: Canvas_assignment_list}
   }
-  return{GClass: GClass_assignment_list, Canvas: Canvas_assignment_list}
 }
 
 

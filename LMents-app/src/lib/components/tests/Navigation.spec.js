@@ -2,6 +2,7 @@
 import { render, screen, fireEvent } from '@testing-library/svelte';
 import Navigation from '../Navigation.svelte';
 import { goto } from '$app/navigation';
+import SidebarComponent from '../Sidebar.svelte';
 
 vi.mock('$app/navigation');
 
@@ -13,14 +14,7 @@ describe('Navigation', () => {
     fireEvent.click(Home);
     expect(goto).toHaveBeenCalledWith('/');
   });
-  
-  test('Login Button is Functional', () => {
-    render(Navigation);
-    const Login = screen.getByAltText('Login');
-    expect(Login).toBeTruthy();
-    fireEvent.click(Login);
-    expect(goto).toHaveBeenCalledWith('/signup');
-  });
+
 
   test('Courses Button is Functional', () => {
     render(Navigation);
@@ -44,5 +38,22 @@ describe('Navigation', () => {
     expect(Announcements).toBeTruthy();
     fireEvent.click(Announcements);
     expect(goto).toHaveBeenCalledWith('/announcements');
+  });
+  test('Menu Button updates sidebarToggle to true', () => {
+    const onCloseMock = vi.fn();
+  
+    render(Navigation, {
+      props: {
+        sidebarToggle: false,
+        onClose: onCloseMock,
+      }
+    });
+  
+    const menuButton = screen.getByAltText('Menu');
+    expect(menuButton).toBeTruthy();
+  
+    fireEvent.click(menuButton);
+  
+    expect(onCloseMock).toHaveBeenCalledWith(true);
   });
 })

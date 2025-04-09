@@ -1,36 +1,62 @@
 <script>
     import { initDB, insertCourseData, markAnnouncementsHidden, markAssignmentsHidden, markCourseHidden, queryCourses } from '$lib/database.js';
     import { theme_color } from '$lib/theme.js';
-    export let data
+    import { enhance } from '$app/forms';
     let dbName = "MyDatabase"
-    let GClass = data.GClass
-    let Canvas = data.Canvas
     let selectedFilter = 'all';
     let query_result = null;
+    let GClass = null
+    let Canvas = null
+    
+    async function updateClasses(){    
+        for (let i = 0; i < GClass.length; i++){ 
+            await insertCourseData(GClass[i].id, GClass[i].name, false)
+        }
+        for (let j = 0; j < Canvas.length; j++){
+            await insertCourseData(Canvas[j].id, Canvas[j].name, false)
+        }
+    }
+    
     async function getClasses(){
         await initDB(dbName)
-        if(true){
-            for (let i = 0; i < GClass.length; i++){ 
-                await insertCourseData(GClass[i].id, GClass[i].name, false)
-            }
-            for (let j = 0; j < Canvas.length; j++){
-                await insertCourseData(Canvas[j].id, Canvas[j].name, false)
-            }
-        }
         query_result = await queryCourses()
     }
     getClasses()
-
+    
     async function hidden(course_id, hidden) {
         markCourseHidden(course_id, hidden)
         markAssignmentsHidden()
         markAnnouncementsHidden()
         query_result = await queryCourses()
     }
+
+    async function checkEmpty(){
+        await getClasses()
+        if (query_result.values.length == 0){
+            const button = document.querySelector('#refresh_button_courses')
+            button.click()
+        }
+    }
+    checkEmpty()
+    
 </script>
 
 <div class="title-container">
-    <div class="title"> Classes </div>
+    <div class="title"> Classes 
+        <form method="post" action="?/courses" 
+        use:enhance={({}) => {
+            return async ({ result }) => {
+                GClass = result.data.GClass_result
+                Canvas = result.data.Canvas_result
+                await updateClasses()
+                await getClasses()
+            }
+        }}>
+        <button type="submit" id="refresh_button_courses">
+            <img src="/refresh.png" alt="Refresh" style="width: 25px; height: 25px;"/>
+        </button>
+    </form>
+    </div>
 
     <div class="filter-container">
         <select bind:value={selectedFilter}>
@@ -81,8 +107,9 @@
     .course {
         display: flex;
         width:auto;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
+        text-align: left;
         gap: 15px;
         color: #f7f7f7;
     }
@@ -93,5 +120,9 @@
     }
     .hidden:hover{
         cursor: pointer;
+    }
+    button {
+        border: 0px;
+        background-color: #d7d7d700;
     }
 </style>

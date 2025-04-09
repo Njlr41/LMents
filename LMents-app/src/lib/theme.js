@@ -1,15 +1,6 @@
 import { writable } from 'svelte/store';
 import { Preferences } from '@capacitor/preferences';
 
-export const theme_color = writable("green");
+export const theme_color = writable('#F2B344');
+export const theme_color_name = writable('Yellow');
 
-if (typeof window !== 'undefined') {
-    let color = await Preferences.get({ key: 'theme_color' })
-    if (color) {
-         theme_color.set(color.value);
-    }
-
-    theme_color.subscribe(async (color) => {
-        Preferences.set({key: "theme_color", value: color})
-    })
-}
