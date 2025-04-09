@@ -5,10 +5,12 @@
     import { theme_color, theme_color_name } from "$lib/theme.js";
 
     export let sidebarToggle = false;
+    export let onClose = () => {};
     let colorsToggle = false;
 
     function toggleSidebar() {
         sidebarToggle = !sidebarToggle;
+        onClose(sidebarToggle);
     }
 
     function toggleColors() {

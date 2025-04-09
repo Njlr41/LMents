@@ -3,9 +3,11 @@
     import { goto } from "$app/navigation";
 
     export let sidebarToggle = false;
+    export let onClose = () => {};
 
     function toggleSidebar() {
         sidebarToggle = !sidebarToggle;
+        onClose(sidebarToggle);
     }
 
 </script>
