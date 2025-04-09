@@ -23,8 +23,8 @@
     }
 
     function updateTheme(color, code){
-        $theme_color = code;
         $theme_color_name = color;
+        $theme_color = code;
     }
 
 </script>

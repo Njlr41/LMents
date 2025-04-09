@@ -35,8 +35,6 @@
         goto('/courses');
     }
     export let data
-    console.log("TOF", JSON.stringify(data))
-    
     const dbName = "MyDatabase"
     async function logout(){
         await initDB(dbName)
