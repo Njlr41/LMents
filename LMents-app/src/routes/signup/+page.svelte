@@ -4,6 +4,7 @@
     import { Capacitor } from "@capacitor/core";
     import { clearData, initDB } from "$lib/database.js";
     import { theme_color } from "$lib/theme.js";
+    import { Preferences } from "@capacitor/preferences";
 
     const AUTH_GOOGLE_ID = import.meta.env.VITE_AUTH_GOOGLE_ID;
 
@@ -181,15 +182,6 @@
     .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
         background-color: #303030;
         opacity: 8%;
-    }
-
-
-    .auth-form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
     }
     
     .login-button {
