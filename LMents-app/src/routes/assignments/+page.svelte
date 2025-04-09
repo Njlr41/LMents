@@ -1,13 +1,13 @@
 <script>
     import { initDB, insertAssignmentData, markAssignmentComplete, markAssignmentPriority, queryAnnouncements, queryAssignments, queryCourseName } from '$lib/database.js';
     import { theme_color } from '$lib/theme.js';
-    import { text } from '@sveltejs/kit';
+    import { enhance } from '$app/forms';
 
-    export let data;
-    let query_result = null;
     let dbName = "MyDatabase"
+    let query_result = null;
     let selectedFilter = 'all';
-
+    let GClass = null
+    let Canvas = null
     function intToMonth(int){
         const months = ['January', 'February', 'March', 'April'
                        ,'May', 'June', 'July', 'August', 'September'
@@ -22,24 +22,25 @@
         let x = str.split(",");
         return `${intToMonth(x[1])} ${x[2]}, ${x[0]}`
     }
+
+    async function updateAssignments(){
+        for (let i = 0; i < GClass.length; i++){
+            await insertAssignmentData(GClass[i].id, GClass[i].courseId
+                                      ,GClass[i].title, GClass[i].description
+                                      ,GClass[i].dueDate ? `${GClass[i].dueDate.year},${GClass[i].dueDate.month - 1},${GClass[i].dueDate.day}`: "No Deadline"
+                                      ,GClass[i].alternateLink, false, false, false)
+        }
+        for (let j = 0; j < Canvas.length; j++){
+            let date = new Date(Canvas[j].due_at)
+            await insertAssignmentData(Canvas[j].id, Canvas[j].course_id
+                                      ,Canvas[j].name, Canvas[j].description
+                                      ,Canvas[j].due_at ? `${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}` : "No Deadline"
+                                      ,Canvas[j].html_url, false, false, false)
+        }
+    }
+
     async function getAssignments(){
         await initDB(dbName)
-        for (let i = 0; i < data.GClass.length; i++){
-            if (data.GClass[i].dueDate) {
-                console.log("Devil", data.GClass[i].title, data.GClass[i].dueDate.year,data.GClass[i].dueDate.month,data.GClass[i].dueDate.day)
-            }
-            await insertAssignmentData(data.GClass[i].id, data.GClass[i].courseId
-                                      ,data.GClass[i].title, data.GClass[i].description
-                                      ,data.GClass[i].dueDate ? `${data.GClass[i].dueDate.year},${data.GClass[i].dueDate.month - 1},${data.GClass[i].dueDate.day}`: "No Deadline"
-                                      ,data.GClass[i].alternateLink, false, false, false)
-        }
-        for (let j = 0; j < data.Canvas.length; j++){
-            let date = new Date(data.Canvas[j].due_at)
-            await insertAssignmentData(data.Canvas[j].id, data.Canvas[j].course_id
-                                      ,data.Canvas[j].name, data.Canvas[j].description
-                                      ,data.Canvas[j].due_at ? `${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}` : "No Deadline"
-                                      ,data.Canvas[j].html_url, false, false, false)
-        }
         query_result = await queryAssignments()
     }
     getAssignments()
@@ -53,10 +54,33 @@
         markAssignmentPriority(assignment_id, priority)
         query_result = await queryAssignments()
     }
+
+    async function checkEmpty(){
+        await getAssignments()
+        if (query_result.values.length == 0){
+            const button = document.querySelector('#refresh_button_assignments')
+            button.click()
+        }
+    }
+    checkEmpty()
 </script>
 
 <div class="title-container">
-    <div class="title"> Assignments </div>
+    <div class="title"> Assignments 
+        <form method="post" action="?/assignments"
+        use:enhance={({}) => {
+            return async ({ result }) => {
+                GClass = result.data.GClass_result
+                Canvas = result.data.Canvas_result
+                await updateAssignments()
+                await getAssignments()
+            }
+        }}>
+        <button type="submit" id="refresh_button_assignments">
+            <img src="/refresh.png" alt="Refresh" style="width: 25px; height: 25px;"/>
+        </button>
+        </form>
+    </div>
 
     <div class="filter-container">
         <select bind:value={selectedFilter}>
@@ -158,6 +182,11 @@
         width:auto;
         align-items:center;
         gap:5px;
+    }
+
+    button {
+        border: 0px;
+        background-color: #d7d7d700;
     }
 
 </style>

@@ -81,6 +81,7 @@
         font-weight: bold;
         margin-bottom: 5px;
         text-align: left;
+        display: flex;
     }
     :global(.title-container) {
         width: auto; 

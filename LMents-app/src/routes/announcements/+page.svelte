@@ -1,11 +1,13 @@
 <script>
     import { initDB, insertAnnouncementData, markAnnouncementPriority, queryAnnouncements, queryCourseName } from '$lib/database.js';
     import { theme_color } from '$lib/theme.js';
-    export let data;
-    let query_result = null
-    let dbName = "MyDatabase"
-    let selectedFilter = 'all';
+    import { enhance } from '$app/forms';
 
+    let dbName = "MyDatabase"
+    let query_result = null
+    let selectedFilter = 'all';
+    let GClass = null
+    let Canvas = null
 
     function intToMonth(int){
         const months = ['January', 'February', 'March', 'April'
@@ -18,23 +20,25 @@
         let x = str.split(",");
         return `${intToMonth(x[1])} ${x[2]}, ${x[0]}`
     }
-    console.log(data)
+
+    async function updateAnnouncements(){
+        for (let i = 0; i < GClass.length; i++){
+            let date = new Date(GClass[i].creationTime)
+            await insertAnnouncementData(GClass[i].id, GClass[i].courseId, GClass[i].text
+                                        ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
+                                        ,GClass[i].alternateLink, false, false)
+        }
+        for (let j = 0; j < Canvas.length; j++){
+            let date = new Date(Canvas[j].posted_at)
+            await insertAnnouncementData(Canvas[j].id, Canvas[j].context_code.slice(7), Canvas[j].message
+                                        ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
+                                        ,Canvas[j].url, false, false
+            )
+        }
+    }
 
     async function getAnnouncements(){
         await initDB(dbName)
-        for (let i = 0; i < data.GClass.length; i++){
-            let date = new Date(data.GClass[i].creationTime)
-            await insertAnnouncementData(data.GClass[i].id, data.GClass[i].courseId, data.GClass[i].text
-                                        ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
-                                        ,data.GClass[i].alternateLink, false, false)
-        }
-        for (let j = 0; j < data.Canvas.length; j++){
-            let date = new Date(data.Canvas[j].posted_at)
-            await insertAnnouncementData(data.Canvas[j].id, data.Canvas[j].context_code.slice(7), data.Canvas[j].message
-                                        ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
-                                        ,data.Canvas[j].url, false, false
-            )
-        }
         query_result = await queryAnnouncements()
     }
     getAnnouncements()
@@ -43,10 +47,33 @@
         markAnnouncementPriority(announcement_id, priority)
         query_result = await queryAnnouncements()
     }
+
+    async function checkEmpty(){
+        await getAnnouncements()
+        if (query_result.values.length == 0){
+            const button = document.querySelector('#refresh_button_announcements')
+            button.click()
+        }
+    }
+    checkEmpty()
 </script>
 
 <div class="title-container">
-    <div class="title"> Announcements </div>
+    <div class="title"> Announcements
+        <form method="post" action="?/announcements"
+        use:enhance={({}) => {
+            return async ({ result }) => {
+                GClass = result.data.GClass_result
+                Canvas = result.data.Canvas_result
+                await updateAnnouncements()
+                await getAnnouncements()
+            }
+        }}>
+        <button type="submit" id="refresh_button_announcements">
+            <img src="/refresh.png" alt="Refresh" style="width: 25px; height: 25px;"/>
+        </button>
+        </form>
+    </div>
 
     <div class="filter-container">
         <select bind:value={selectedFilter}>
@@ -125,4 +152,8 @@
         gap:5px;
     }
 
+    button {
+        border: 0px;
+        background-color: #d7d7d700;
+    }
 </style>
