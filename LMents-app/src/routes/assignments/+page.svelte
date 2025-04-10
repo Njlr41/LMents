@@ -33,7 +33,7 @@
         for (let j = 0; j < Canvas.length; j++){
             let date = new Date(Canvas[j].due_at)
             await insertAssignmentData(Canvas[j].id, Canvas[j].course_id
-                                      ,Canvas[j].name, Canvas[j].description
+                                      ,Canvas[j].name, Canvas[j].description.substring(3, (Canvas[j].description.length - 4))
                                       ,Canvas[j].due_at ? `${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}` : "No Deadline"
                                       ,Canvas[j].html_url, false, false, false)
         }

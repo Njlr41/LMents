@@ -30,7 +30,7 @@
         }
         for (let j = 0; j < Canvas.length; j++){
             let date = new Date(Canvas[j].posted_at)
-            await insertAnnouncementData(Canvas[j].id, Canvas[j].context_code.slice(7), Canvas[j].message
+            await insertAnnouncementData(Canvas[j].id, Canvas[j].context_code.slice(7), Canvas[j].message.substring(3, (Canvas[j].message.length - 4))
                                         ,`${date.getUTCFullYear()},${date.getUTCMonth()},${date.getUTCDate()}`
                                         ,Canvas[j].url, false, false
             )
