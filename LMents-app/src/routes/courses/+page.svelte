@@ -2,6 +2,9 @@
     import { initDB, insertCourseData, markAnnouncementsHidden, markAssignmentsHidden, markCourseHidden, queryCourses } from '$lib/database.js';
     import { theme_color } from '$lib/theme.js';
     import { enhance } from '$app/forms';
+    import { slide } from 'svelte/transition';
+
+
     let dbName = "MyDatabase"
     let selectedFilter = 'all';
     let query_result = null;
@@ -38,22 +41,26 @@
         }
     }
     checkEmpty()
-    
+
+    let isLoading = false;
 </script>
 
 <div class="title-container">
     <div class="title"> Classes 
         <form method="post" action="?/courses" 
+        on:submit={() => { isLoading = true; }}
         use:enhance={({}) => {
             return async ({ result }) => {
                 GClass = result.data.GClass_result
                 Canvas = result.data.Canvas_result
                 await updateClasses()
                 await getClasses()
+
+                isLoading = false;
             }
         }}>
         <button type="submit" id="refresh_button_courses">
-            <img src="/refresh.png" alt="Refresh" style="width: 25px; height: 25px;"/>
+            <img src="/refresh.svg" alt="Refresh" style="width: 28px; height: 28px;"/>
         </button>
     </form>
     </div>
@@ -66,6 +73,12 @@
         </select>
     </div>
 </div>
+
+{#if isLoading}
+    <div class="loader-container" transition:slide>
+        <div class="loader"></div>
+    </div>
+{/if}
 
 {#if !query_result?.values}
     <div class="empty"> No Classes </div>
@@ -124,5 +137,6 @@
     button {
         border: 0px;
         background-color: #d7d7d700;
+        cursor:pointer;
     }
 </style>
