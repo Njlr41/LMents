@@ -21,6 +21,6 @@ if (typeof window !== 'undefined'){
         theme_color_name.subscribe((color_name) => {
             Preferences.set({ key: 'theme_color_name', value: color_name });
         });
-    })
+    })();
 }
 
